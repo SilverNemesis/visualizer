@@ -11,20 +11,22 @@ class App extends React.Component {
       running: false
     };
     this.data = data;
-    this.queue = [];
-    this.updateState = this.updateState.bind(this);
+    this.drawBars = this.drawBars.bind(this);
     this.shuffleAction = this.shuffleAction.bind(this);
     this.bubbleSortAction = this.bubbleSortAction.bind(this);
     this.insertionSortAction = this.insertionSortAction.bind(this);
   }
 
   componentDidMount() {
-    this.drawBars();
-    setInterval(this.updateState, 1);
+    window.requestAnimationFrame(this.drawBars);
   }
 
-  componentDidUpdate() {
-    this.drawBars();
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  async task(i) {
+    await new Promise(res => setTimeout(res, 1));
   }
 
   swap(data, i, j) {
@@ -33,17 +35,17 @@ class App extends React.Component {
     data[j] = t;
   }
 
-  shuffle() {
-    const data = [...this.data];
+  shuffle(done) {
+    const data = this.data;
     const n = data.length;
     for (let i = n - 1; i >= 0; i--) {
       this.swap(data, i, Math.floor(Math.random() * i));
     }
-    this.addState(data);
+    done();
   }
 
-  bubbleSort() {
-    const data = [...this.data];
+  async bubbleSort(done) {
+    const data = this.data;
     const n = data.length - 1;
     for (let i = 0; i < n; i++) {
       let count = 0;
@@ -52,17 +54,17 @@ class App extends React.Component {
           this.swap(data, j, j + 1);
           count++;
         }
-        this.addState([...data]);
+        await this.task();
       }
-      this.addState([...data]);
       if (count === 0) {
         break;
       }
     }
+    done();
   }
 
-  insertionSort() {
-    const data = [...this.data];
+  async insertionSort(done) {
+    const data = this.data;
     const n = data.length;
     for (let i = 1; i < n; i++) {
       const key = data[i];
@@ -70,50 +72,28 @@ class App extends React.Component {
       while (j >= 0 && data[j] > key) {
         data[j + 1] = data[j];
         j = j - 1;
-        this.addState([...data]);
+        await this.task();
       }
       data[j + 1] = key;
-      this.addState([...data]);
     }
-  }
-
-  addState(data) {
-    this.queue.push(data);
-  }
-
-  remState() {
-    if (this.queue.length === 0) {
-      return null;
-    }
-    return this.queue.shift();
-  }
-
-  updateState() {
-    const data = this.remState();
-    if (data) {
-      this.data = data;
-      this.drawBars();
-    }
-    else if (this.state.running) {
-      this.setState({ running: false }, () => { console.log(this.state); });
-    }
+    done();
   }
 
   shuffleAction() {
     this.setState({ running: true }, () => {
-      console.log(this.state); this.shuffle();
+      this.shuffle(() => this.setState({ running: false }));
     });
   }
 
   bubbleSortAction() {
     this.setState({ running: true }, () => {
-      console.log(this.state); this.bubbleSort();
+      this.bubbleSort(() => this.setState({ running: false }));
     });
   }
 
   insertionSortAction() {
     this.setState({ running: true }, () => {
-      console.log(this.state); this.insertionSort();
+      this.insertionSort(() => this.setState({ running: false }));
     });
   }
 
@@ -135,6 +115,7 @@ class App extends React.Component {
       const barHeight = Math.floor(data[i] / 100 * .8 * h);
       ctx.fillRect(i * step, h - barHeight, barWidth, barHeight);
     }
+    window.requestAnimationFrame(this.drawBars);
   }
 
   render() {
