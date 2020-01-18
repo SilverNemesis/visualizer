@@ -1,4 +1,18 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Data Visualizer
+
+This is the Data Visualizer application that I created to better understand how various algorithms work.
+
+You can check out the [running application](https://silvernemesis.github.io/visualizer/) to see what it does.
+
+## Prerequisites
+
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), and it requires [Node.js](https://nodejs.org/en/) to be installed in order to be used.
+
+## Installing
+
+In the project directory, you must run this once to restore the required node packages:
+
+### `yarn install`
 
 ## Available Scripts
 
@@ -37,6 +51,10 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+### `yarn deploy`
+
+Deploys the application to [GitHub Pages](https://pages.github.com/), make sure that you update the "homepage" key in the [package.json](package.json) file to reflect the GitHub Pages URL for your GitHub Repository before you run this.
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
@@ -66,3 +84,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
