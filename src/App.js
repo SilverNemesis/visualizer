@@ -13,8 +13,11 @@ class App extends React.Component {
     this.data = data;
     this.drawBars = this.drawBars.bind(this);
     this.shuffleAction = this.shuffleAction.bind(this);
+    this.reverseAction = this.reverseAction.bind(this);
     this.bubbleSortAction = this.bubbleSortAction.bind(this);
     this.insertionSortAction = this.insertionSortAction.bind(this);
+    this.mergeSortAction = this.mergeSortAction.bind(this);
+    this.quickSortAction = this.quickSortAction.bind(this);
   }
 
   componentDidMount() {
@@ -35,11 +38,22 @@ class App extends React.Component {
     data[j] = t;
   }
 
-  shuffle(done) {
+  async shuffle(done) {
     const data = this.data;
     const n = data.length;
     for (let i = n - 1; i >= 0; i--) {
       this.swap(data, i, Math.floor(Math.random() * i));
+      await this.task();
+    }
+    done();
+  }
+
+  async reverse(done) {
+    const data = this.data;
+    const n = data.length;
+    for (let i = 0; i < n / 2; i++) {
+      this.swap(data, i, n - i - 1);
+      await this.task();
     }
     done();
   }
@@ -79,9 +93,89 @@ class App extends React.Component {
     done();
   }
 
+  async mergeSort(done) {
+    const sort = async (data, l, r) => {
+      if (l < r) {
+        const m = Math.floor(l + (r - l) / 2);
+        await sort(data, l, m);
+        await sort(data, m + 1, r);
+        await merge(data, l, m, r);
+      }
+    }
+    const merge = async (data, start, mid, end) => {
+      let start2 = mid + 1;
+      if (data[mid] <= data[start2]) {
+        return;
+      }
+      while (start <= mid && start2 <= end) {
+        if (data[start] <= data[start2]) {
+          start++;
+        }
+        else {
+          const value = data[start2];
+          let index = start2;
+          while (index !== start) {
+            data[index] = data[index - 1];
+            await this.task();
+            index--;
+          }
+          data[start] = value;
+          await this.task();
+          start++;
+          mid++;
+          start2++;
+        }
+      }
+    }
+    await sort(this.data, 0, this.data.length - 1);
+    done();
+  }
+
+  async quickSort(done) {
+    const partition = async (data, low, high) => {
+      if (high - low > 2) {
+        const mid = Math.floor(low + (high - low) / 2);
+        if (data[low] < data[mid] && data[mid] < data[high]) {
+          this.swap(data, mid, high);
+        }
+        else if (data[low] > data[mid] && data[mid] > data[high]) {
+          this.swap(data, mid, high);
+        }
+        await this.task();
+      }
+      const pivot = data[high];
+      let i = (low - 1);
+      for (let j = low; j <= high - 1; j++) {
+        if (data[j] < pivot) {
+          i++;
+          this.swap(data, i, j);
+          await this.task();
+        }
+      }
+      this.swap(data, i + 1, high);
+      await this.task();
+      return (i + 1);
+    }
+    const sort = async (data, low, high) => {
+      if (low < high) {
+        const mid = await partition(data, low, high);
+        await sort(data, low, mid - 1);
+        await sort(data, mid + 1, high);
+      }
+    }
+    await sort(this.data, 0, this.data.length - 1);
+    done();
+  }
+
   shuffleAction() {
     this.setState({ running: true }, () => {
       this.shuffle(() => this.setState({ running: false }));
+    });
+  }
+
+  reverseAction() {
+    this.setState({ running: true }, () => {
+      this.reverse(() => this.setState({ running: false }));
     });
   }
 
@@ -94,6 +188,18 @@ class App extends React.Component {
   insertionSortAction() {
     this.setState({ running: true }, () => {
       this.insertionSort(() => this.setState({ running: false }));
+    });
+  }
+
+  mergeSortAction() {
+    this.setState({ running: true }, () => {
+      this.mergeSort(() => this.setState({ running: false }));
+    });
+  }
+
+  quickSortAction() {
+    this.setState({ running: true }, () => {
+      this.quickSort(() => this.setState({ running: false }));
     });
   }
 
@@ -130,8 +236,11 @@ class App extends React.Component {
           <div className="row h-25">
             <div className="col-sm d-flex justify-content-around align-items-center">
               <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.shuffleAction}>Shuffle</button>
+              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.reverseAction}>Reverse</button>
               <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.bubbleSortAction}>Bubble Sort</button>
               <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.insertionSortAction}>Insertion Sort</button>
+              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.mergeSortAction}>Merge Sort</button>
+              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running} onClick={this.quickSortAction}>Quick Sort</button>
             </div>
           </div>
         </div>
