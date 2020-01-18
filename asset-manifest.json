@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/fcc-wikipedia/static/css/main.288820e0.chunk.css",
+    "main.js": "/fcc-wikipedia/static/js/main.20600884.chunk.js",
+    "main.js.map": "/fcc-wikipedia/static/js/main.20600884.chunk.js.map",
+    "runtime-main.js": "/fcc-wikipedia/static/js/runtime-main.8ac78e60.js",
+    "runtime-main.js.map": "/fcc-wikipedia/static/js/runtime-main.8ac78e60.js.map",
+    "static/js/2.17ee9868.chunk.js": "/fcc-wikipedia/static/js/2.17ee9868.chunk.js",
+    "static/js/2.17ee9868.chunk.js.map": "/fcc-wikipedia/static/js/2.17ee9868.chunk.js.map",
+    "index.html": "/fcc-wikipedia/index.html",
+    "precache-manifest.f21cb57d40b05214a9b81feb506f4f80.js": "/fcc-wikipedia/precache-manifest.f21cb57d40b05214a9b81feb506f4f80.js",
+    "service-worker.js": "/fcc-wikipedia/service-worker.js",
+    "static/css/main.288820e0.chunk.css.map": "/fcc-wikipedia/static/css/main.288820e0.chunk.css.map",
+    "static/js/2.17ee9868.chunk.js.LICENSE": "/fcc-wikipedia/static/js/2.17ee9868.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8ac78e60.js",
+    "static/js/2.17ee9868.chunk.js",
+    "static/css/main.288820e0.chunk.css",
+    "static/js/main.20600884.chunk.js"
+  ]
+}
