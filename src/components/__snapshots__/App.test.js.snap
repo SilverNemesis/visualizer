@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Section
+  outer={true}
+>
+  <Section>
+    <Navigation />
+  </Section>
+  <Section
+    center={true}
+    grow={true}
+  >
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      path="/sort"
+    />
+  </Section>
+</Section>
+`;

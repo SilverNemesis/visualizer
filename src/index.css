@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-.screen {
-  height: 100vh;
-}
-
 .case {
   height: 50vh;
   display: flex;

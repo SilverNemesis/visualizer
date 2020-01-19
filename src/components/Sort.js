@@ -1,8 +1,9 @@
 import React from 'react';
-import Drawing from './lib/Drawing'
-import Vector from './lib/Vector'
+import { Container, Row, Col, Button } from '../primitives'
+import Drawing from '../lib/Drawing'
+import Vector from '../lib/Vector'
 
-class App extends React.Component {
+class Sort extends React.Component {
   constructor(props) {
     super(props);
     const data = [];
@@ -29,7 +30,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.requestAnimationFrame(this.renderCanvas);
+    this.frame = window.requestAnimationFrame(this.renderCanvas);
+  }
+
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.frame);
   }
 
   update(data) {
@@ -99,32 +104,30 @@ class App extends React.Component {
     if (!this.state.running && this.queue.length === 0) {
       this.setState({ rendering: false });
     }
-    window.requestAnimationFrame(this.renderCanvas);
+    this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
   render() {
     return (
-      <React.Fragment>
-        <div className="container-fluid screen">
-          <div className="row">
-            <div className="col-sm case">
-              <canvas className="canvas" ref={elem => this.canvas = elem} />
-            </div>
-          </div>
-          <div className="row h-25">
-            <div className="col-sm d-flex justify-content-around align-items-center">
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.shuffleAction}>Shuffle</button>
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.reverseAction}>Reverse</button>
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.bubbleSortAction}>Bubble Sort</button>
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.insertionSortAction}>Insertion Sort</button>
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortAction}>Merge Sort</button>
-              <button type="button" className="btn btn-primary btn-lg" disabled={this.state.running || this.state.rendering} onClick={this.quickSortAction}>Quick Sort</button>
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
+      <Container fluid>
+        <Row>
+          <Col col="sm" className="case">
+            <canvas className="canvas" ref={elem => this.canvas = elem} />
+          </Col>
+        </Row>
+        <Row className="h-25 mt-4">
+          <Col col="sm" className="d-flex justify-content-around align-items-center">
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.shuffleAction}>Shuffle</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.reverseAction}>Reverse</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.bubbleSortAction}>Bubble Sort</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.insertionSortAction}>Insertion Sort</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortAction}>Merge Sort</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.quickSortAction}>Quick Sort</Button>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
 
-export default App;
+export default Sort;
