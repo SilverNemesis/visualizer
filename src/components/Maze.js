@@ -78,7 +78,6 @@ class Maze extends React.Component {
           unmadeCells.push(dir);
         }
       }
-      console.log(unmadeCells);
       if (unmadeCells.length > 0) {
         let dir;
         if (unmadeCells.includes(lastDir) && Math.random() > windiness) {
