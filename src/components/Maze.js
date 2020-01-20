@@ -1,16 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Button } from '../primitives'
 import Drawing from '../lib/Drawing'
-import Vector from '../lib/Vector'
-
-const directions = [
-  { x: -1, y: 0 },
-  { x: 0, y: -1 },
-  { x: 1, y: 0 },
-  { x: 0, y: 1 }
-];
-
-const windiness = 0.8;
+import Grid from '../lib/Grid'
 
 class Maze extends React.Component {
   constructor(props) {
@@ -23,13 +14,20 @@ class Maze extends React.Component {
       running: false,
       rendering: false
     };
+
     this.data = data;
     this.queue = [];
+
     this.drawing = new Drawing();
-    this.vector = new Vector();
+    this.grid = new Grid();
+
+    this.run = this.run.bind(this)
     this.update = this.update.bind(this)
     this.done = this.done.bind(this)
+
+    this.onClickReset = this.onClickReset.bind(this);
     this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
+
     this.renderCanvas = this.renderCanvas.bind(this);
   }
 
@@ -45,6 +43,14 @@ class Maze extends React.Component {
     return items.map(item => Array.isArray(item) ? this.clone(item) : item);
   }
 
+  run(routine) {
+    this.setState({ running: true, rendering: true }, () => {
+      this.timeStamp = undefined;
+      routine(this.clone(this.data), this.update);
+      this.done();
+    });
+  }
+
   update(data) {
     this.queue.push(this.clone(data));
   }
@@ -55,79 +61,20 @@ class Maze extends React.Component {
     });
   }
 
-  createMaze(data, update, done) {
-    const n = data.length;
-    const m = data[0].length;
-    this.growMaze(data, m, n, { x: 1, y: 1 }, update);
-    done();
-  }
-
-  growMaze(data, mx, my, start, update) {
-    const cells = [];
-    let lastDir;
-    this.carve(data, start);
-    update(data);
-    data[start.y][start.x] = 0;
-    cells.push(start);
-    while (cells.length > 0) {
-      const cell = cells[cells.length - 1];
-      const unmadeCells = [];
-      for (let i = 0; i < directions.length; i++) {
-        const dir = directions[i];
-        if (this.canCarve(data, mx, my, cell, dir)) {
-          unmadeCells.push(dir);
-        }
-      }
-      if (unmadeCells.length > 0) {
-        let dir;
-        if (unmadeCells.includes(lastDir) && Math.random() > windiness) {
-          dir = lastDir;
-        } else {
-          dir = unmadeCells[Math.floor(Math.random() * unmadeCells.length)];
-        }
-        this.carve(data, this.addDir(cell, dir, 1));
-        this.carve(data, this.addDir(cell, dir, 2));
-        update(data);
-        cells.push(this.addDir(cell, dir, 2));
-        lastDir = dir;
-      } else {
-        cells.pop();
-        lastDir = null;
-      }
+  reset(data, update) {
+    const my = data.length;
+    for (let y = 0; y < my; y++) {
+      data[y].fill(1);
+      update(data);
     }
   }
 
-  carve(data, pos) {
-    data[pos.y][pos.x] = 0;
-  }
-
-  canCarve(data, mx, my, pos, dir) {
-    if (!this.contains(mx, my, this.addDir(pos, dir, 3))) {
-      return false;
-    }
-    const nxt = this.addDir(pos, dir, 2);
-    return data[nxt.y][nxt.x] === 1;
-  }
-
-  contains(mx, my, pos) {
-    if (pos.x < 0 || pos.y < 0 || pos.x >= mx || pos.y >= my) {
-      return false;
-    }
-    return true;
-  }
-
-  addDir(pos, dir, len) {
-    return {
-      x: pos.x + dir.x * len,
-      y: pos.y + dir.y * len
-    }
+  onClickReset() {
+    this.run(this.reset);
   }
 
   onClickCreateMaze() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.createMaze(this.clone(this.data), this.update, this.done);
-    });
+    this.run(this.grid.createMaze);
   }
 
   renderCanvas(timeStamp) {
@@ -156,6 +103,7 @@ class Maze extends React.Component {
             <canvas className="canvas" ref={elem => this.canvas = elem} />
           </Col>
           <Col col="sm" className="d-flex flex-column justify-content-around align-items-start">
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickReset}>Reset</Button>
             <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateMaze}>Create Maze</Button>
           </Col>
         </Row>
