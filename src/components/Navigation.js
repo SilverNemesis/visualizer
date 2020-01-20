@@ -25,6 +25,7 @@ class Navigation extends React.Component {
                     <NavBarNav>
                         <Link to="/" className="nav-link">Home</Link>
                         <Link to="/sort" className="nav-link">Sort</Link>
+                        <Link to="/maze" className="nav-link">Maze</Link>
                     </NavBarNav>
                 </NavBarToggler>
             </NavBar>

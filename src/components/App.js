@@ -4,6 +4,7 @@ import Navigation from './Navigation'
 import { Section } from '../primitives'
 import Home from './Home'
 import Sort from './Sort'
+import Maze from './Maze'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Section grow center>
         <Route exact path="/" component={Home} />
         <Route path="/sort" component={Sort} />
+        <Route path="/maze" component={Maze} />
       </Section>
     </Section>
   );

@@ -12,8 +12,15 @@ code {
     monospace;
 }
 
-.case {
+.top-case {
   height: 50vh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.side-case {
+  width: 50vw;
+  height: 89vh;
   display: flex;
   align-items: flex-end;
 }

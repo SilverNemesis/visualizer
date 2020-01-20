@@ -111,7 +111,7 @@ class Sort extends React.Component {
     return (
       <Container fluid>
         <Row>
-          <Col col="sm" className="case">
+          <Col col="sm" className="top-case">
             <canvas className="canvas" ref={elem => this.canvas = elem} />
           </Col>
         </Row>
