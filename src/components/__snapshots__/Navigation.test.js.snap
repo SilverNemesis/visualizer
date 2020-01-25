@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<NavBar
+  dark={true}
+  large={true}
+>
+  <ForwardRef
+    className="navbar-brand"
+    to="/"
+  >
+    <h1>
+      Visualizer
+    </h1>
+  </ForwardRef>
+  <NavBarToggler
+    expanded={false}
+    onClick={[Function]}
+  >
+    <NavBarNav>
+      <ForwardRef
+        className="nav-link"
+        to="/"
+      >
+        Home
+      </ForwardRef>
+      <ForwardRef
+        className="nav-link"
+        to="/sort"
+      >
+        Sort
+      </ForwardRef>
+      <ForwardRef
+        className="nav-link"
+        to="/maze"
+      >
+        Maze
+      </ForwardRef>
+    </NavBarNav>
+  </NavBarToggler>
+</NavBar>
+`;

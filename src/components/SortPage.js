@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Row, Col, Button } from '../primitives'
 import Drawing from '../lib/Drawing'
-import Vector from '../lib/Vector'
+import Sort from '../lib/Sort'
 
-class Sort extends React.Component {
+class SortPage extends React.Component {
   constructor(props) {
     super(props);
     const data = [];
@@ -17,7 +17,7 @@ class Sort extends React.Component {
     this.data = data;
     this.queue = [];
     this.drawing = new Drawing();
-    this.vector = new Vector();
+    this.vector = new Sort();
     this.update = this.update.bind(this)
     this.done = this.done.bind(this)
     this.renderCanvas = this.renderCanvas.bind(this);
@@ -130,4 +130,4 @@ class Sort extends React.Component {
   }
 }
 
-export default Sort;
+export default SortPage;

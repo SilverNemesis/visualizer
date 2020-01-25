@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Container
+  className="mt-5"
+  fluid={true}
+>
+  <Row>
+    <Col
+      className="side-case"
+      col="sm"
+    >
+      <canvas
+        className="canvas"
+      />
+    </Col>
+    <Col
+      className="d-flex flex-column justify-content-around align-items-start"
+      col="sm"
+    >
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Create Maze
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Create Dungeon
+      </Button>
+    </Col>
+  </Row>
+</Container>
+`;

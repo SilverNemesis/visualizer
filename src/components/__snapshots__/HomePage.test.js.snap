@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<pre
+  style={
+    Object {
+      "color": "black",
+    }
+  }
+>
+  <code>
+    &lt;Section outer&gt;
+  &lt;Section&gt;
+    &lt;Navigation /&gt;
+  &lt;/Section&gt;
+  &lt;Section grow center&gt;
+    &lt;Route exact path="/" component={Home} /&gt;
+    &lt;Route path="/sort" component={Sort} /&gt;
+  &lt;/Section&gt;
+&lt;/Section&gt;
+  </code>
+</pre>
+`;

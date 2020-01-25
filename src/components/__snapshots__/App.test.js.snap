@@ -20,6 +20,10 @@ exports[`renders correctly 1`] = `
       component={[Function]}
       path="/sort"
     />
+    <Route
+      component={[Function]}
+      path="/maze"
+    />
   </Section>
 </Section>
 `;

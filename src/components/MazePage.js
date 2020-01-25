@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Row, Col, Button } from '../primitives'
 import Drawing from '../lib/Drawing'
-import Grid from '../lib/Grid'
+import Maze from '../lib/Maze'
 
-class Maze extends React.Component {
+class MazePage extends React.Component {
   constructor(props) {
     super(props);
     const data = []
@@ -19,14 +19,14 @@ class Maze extends React.Component {
     this.queue = [];
 
     this.drawing = new Drawing();
-    this.grid = new Grid();
+    this.maze = new Maze();
 
     this.run = this.run.bind(this)
     this.update = this.update.bind(this)
     this.done = this.done.bind(this)
 
-    this.onClickReset = this.onClickReset.bind(this);
     this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
+    this.onClickCreateDungeon = this.onClickCreateDungeon.bind(this);
 
     this.renderCanvas = this.renderCanvas.bind(this);
   }
@@ -61,20 +61,12 @@ class Maze extends React.Component {
     });
   }
 
-  reset(data, update) {
-    const my = data.length;
-    for (let y = 0; y < my; y++) {
-      data[y].fill(1);
-      update(data);
-    }
-  }
-
-  onClickReset() {
-    this.run(this.reset);
-  }
-
   onClickCreateMaze() {
-    this.run(this.grid.createMaze);
+    this.run(this.maze.createMaze);
+  }
+
+  onClickCreateDungeon() {
+    this.run(this.maze.createDungeon);
   }
 
   renderCanvas(timeStamp) {
@@ -103,8 +95,8 @@ class Maze extends React.Component {
             <canvas className="canvas" ref={elem => this.canvas = elem} />
           </Col>
           <Col col="sm" className="d-flex flex-column justify-content-around align-items-start">
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickReset}>Reset</Button>
             <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateMaze}>Create Maze</Button>
+            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateDungeon}>Create Dungeon</Button>
           </Col>
         </Row>
       </Container>
@@ -112,4 +104,4 @@ class Maze extends React.Component {
   }
 }
 
-export default Maze;
+export default MazePage;

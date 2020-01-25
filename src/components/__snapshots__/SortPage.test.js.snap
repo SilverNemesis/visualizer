@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Container
+  fluid={true}
+>
+  <Row>
+    <Col
+      className="top-case"
+      col="sm"
+    >
+      <canvas
+        className="canvas"
+      />
+    </Col>
+  </Row>
+  <Row
+    className="h-25 mt-4"
+  >
+    <Col
+      className="d-flex justify-content-around align-items-center"
+      col="sm"
+    >
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Shuffle
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Reverse
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Bubble Sort
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Insertion Sort
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Merge Sort
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}
+        styles="primary large"
+      >
+        Quick Sort
+      </Button>
+    </Col>
+  </Row>
+</Container>
+`;

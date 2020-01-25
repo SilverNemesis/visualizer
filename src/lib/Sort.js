@@ -1,4 +1,4 @@
-class Vector {
+class Sort {
   swap(data, i, j) {
     const t = data[i];
     data[i] = data[j];
@@ -133,4 +133,4 @@ class Vector {
   }
 }
 
-export default Vector;
+export default Sort;

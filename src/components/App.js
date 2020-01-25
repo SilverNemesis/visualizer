@@ -2,9 +2,9 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import Navigation from './Navigation'
 import { Section } from '../primitives'
-import Home from './Home'
-import Sort from './Sort'
-import Maze from './Maze'
+import HomePage from './HomePage'
+import SortPage from './SortPage'
+import MazePage from './MazePage'
 
 const App = () => {
   return (
@@ -13,9 +13,9 @@ const App = () => {
         <Navigation />
       </Section>
       <Section grow center>
-        <Route exact path="/" component={Home} />
-        <Route path="/sort" component={Sort} />
-        <Route path="/maze" component={Maze} />
+        <Route exact path="/" component={HomePage} />
+        <Route path="/sort" component={SortPage} />
+        <Route path="/maze" component={MazePage} />
       </Section>
     </Section>
   );

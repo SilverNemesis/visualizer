@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Home = () => {
-    const code = `<Section outer>
+const HomePage = () => {
+  const code = `<Section outer>
   <Section>
     <Navigation />
   </Section>
@@ -10,9 +10,9 @@ const Home = () => {
     <Route path="/sort" component={Sort} />
   </Section>
 </Section>`
-    return (
-        <pre style={{ color: 'black' }}><code>{code}</code></pre>
-    )
+  return (
+    <pre style={{ color: 'black' }}><code>{code}</code></pre>
+  )
 }
 
-export default Home
+export default HomePage
