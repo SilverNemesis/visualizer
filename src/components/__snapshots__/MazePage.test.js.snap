@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
   <Row>
     <Col
       className="side-case"
-      col="sm"
+      col="sm-6"
     >
       <canvas
         className="canvas"
@@ -16,7 +16,7 @@ exports[`renders correctly 1`] = `
     </Col>
     <Col
       className="d-flex flex-column justify-content-around align-items-start"
-      col="sm"
+      col="sm-6"
     >
       <Button
         disabled={false}
