@@ -27,15 +27,18 @@ class MazePage extends React.Component {
 
     this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
     this.onClickCreateDungeon = this.onClickCreateDungeon.bind(this);
+    this.onResize = this.onResize.bind(this)
 
     this.renderCanvas = this.renderCanvas.bind(this);
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.onResize)
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize)
     window.cancelAnimationFrame(this.frame);
   }
 
@@ -69,6 +72,14 @@ class MazePage extends React.Component {
     this.run(this.maze.createDungeon);
   }
 
+  onResize() {
+    if (window.screen.width !== this.width || window.screen.height !== this.height) {
+      this.width = window.screen.width;
+      this.height = window.screen.height;
+      this.setState({ screenWidth: this.width, screenHeight: this.height });
+    }
+  }
+
   renderCanvas(timeStamp) {
     if (!this.timeStamp) {
       this.timeStamp = timeStamp;
@@ -88,13 +99,19 @@ class MazePage extends React.Component {
   }
 
   render() {
+    let col1 = "sm-6";
+    let col2 = "sm-6";
+    if (this.state.screenWidth / this.state.screenHeight < 16 / 9) {
+      col1 = "sm-8";
+      col2 = "sm-4";
+    }
     return (
       <Container fluid className="mt-5">
         <Row>
-          <Col col="sm" className="side-case">
+          <Col col={col1} className="side-case">
             <canvas className="canvas" ref={elem => this.canvas = elem} />
           </Col>
-          <Col col="sm" className="d-flex flex-column justify-content-around align-items-start">
+          <Col col={col2} className="d-flex flex-column justify-content-around align-items-start">
             <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateMaze}>Create Maze</Button>
             <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateDungeon}>Create Dungeon</Button>
           </Col>

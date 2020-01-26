@@ -4,8 +4,9 @@ class Drawing {
     const rect = canvas.getBoundingClientRect()
     const w = rect.width;
     const h = rect.height;
-    canvas.width = w;
-    canvas.height = h;
+    const r = window.devicePixelRatio;
+    canvas.width = w * r;
+    canvas.height = h * r;
     const step = Math.floor(w / n);
     const barWidth = Math.floor(step * .8);
     const ctx = canvas.getContext('2d');
