@@ -7,14 +7,14 @@ class Drawing {
     const r = window.devicePixelRatio;
     canvas.width = w * r;
     canvas.height = h * r;
-    const step = Math.floor(w / n);
+    const step = Math.floor(w / n) * .9;
     const barWidth = Math.floor(step * .8);
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = 'black'
     for (let i = 0; i < n; i++) {
       const barHeight = Math.floor((data[i] + 1) / 100 * .8 * h);
-      ctx.fillRect(i * step, h - barHeight, barWidth, barHeight);
+      ctx.fillRect(.05 * w + i * step, .9 * h - barHeight, barWidth, barHeight);
     }
   }
 

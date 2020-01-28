@@ -1,38 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<Container
-  className="mt-5"
-  fluid={true}
+<Section
+  inner={true}
 >
-  <Row>
-    <Col
-      className="side-case"
-      col="sm-6"
+  <Container
+    className="h-100 mt-5"
+    fluid={true}
+  >
+    <Row
+      className="h-100"
     >
-      <canvas
-        className="canvas"
-      />
-    </Col>
-    <Col
-      className="d-flex flex-column justify-content-around align-items-start"
-      col="sm-6"
-    >
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
+      <Col
+        col="sm-6"
       >
-        Create Maze
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
+        <canvas
+          className="w-100 h-100"
+        />
+      </Col>
+      <Col
+        className="d-flex flex-column justify-content-around align-items-start"
+        col="sm-6"
       >
-        Create Dungeon
-      </Button>
-    </Col>
-  </Row>
-</Container>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary large"
+        >
+          Create Maze
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary large"
+        >
+          Create Dungeon
+        </Button>
+      </Col>
+    </Row>
+  </Container>
+</Section>
 `;

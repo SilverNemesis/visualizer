@@ -1,69 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<Container
-  fluid={true}
+<Section
+  inner={true}
 >
-  <Row>
-    <Col
-      className="top-case"
-      col="sm"
-    >
-      <canvas
-        className="canvas"
-      />
-    </Col>
-  </Row>
-  <Row
-    className="h-25 mt-4"
+  <Container
+    className="mt-5"
+    fluid={true}
   >
-    <Col
-      className="d-flex justify-content-around align-items-center"
-      col="sm"
+    <Row
+      row="sm"
     >
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
+      <Col
+        className="d-flex justify-content-around align-items-center"
+        col="sm"
       >
-        Shuffle
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
-      >
-        Reverse
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
-      >
-        Bubble Sort
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
-      >
-        Insertion Sort
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
-      >
-        Merge Sort
-      </Button>
-      <Button
-        disabled={false}
-        onClick={[Function]}
-        styles="primary large"
-      >
-        Quick Sort
-      </Button>
-    </Col>
-  </Row>
-</Container>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Shuffle
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Reverse
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Bubble Sort
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Insertion Sort
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Merge Sort
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
+          Quick Sort
+        </Button>
+      </Col>
+    </Row>
+  </Container>
+  <canvas
+    className="flex-grow-1"
+  />
+</Section>
 `;

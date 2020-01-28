@@ -16,6 +16,7 @@ exports[`renders correctly 1`] = `
   &lt;Section grow center&gt;
     &lt;Route exact path="/" component={Home} /&gt;
     &lt;Route path="/sort" component={Sort} /&gt;
+    &lt;Route path="/maze" component={MazePage} /&gt;
   &lt;/Section&gt;
 &lt;/Section&gt;
   </code>

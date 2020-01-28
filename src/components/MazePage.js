@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button } from '../primitives'
+import { Section, Container, Row, Col, Button } from '../primitives'
 import Drawing from '../lib/Drawing'
 import Maze from '../lib/Maze'
 
@@ -12,7 +12,9 @@ class MazePage extends React.Component {
     }
     this.state = {
       running: false,
-      rendering: false
+      rendering: false,
+      screenWidth: window.screen.width,
+      screenHeight: window.screen.height
     };
 
     this.data = data;
@@ -106,17 +108,19 @@ class MazePage extends React.Component {
       col2 = "sm-4";
     }
     return (
-      <Container fluid className="mt-5">
-        <Row>
-          <Col col={col1} className="side-case">
-            <canvas className="canvas" ref={elem => this.canvas = elem} />
-          </Col>
-          <Col col={col2} className="d-flex flex-column justify-content-around align-items-start">
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateMaze}>Create Maze</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateDungeon}>Create Dungeon</Button>
-          </Col>
-        </Row>
-      </Container>
+      <Section inner>
+        <Container fluid className="h-100 mt-5">
+          <Row className="h-100">
+            <Col col={col1}>
+              <canvas className="w-100 h-100" ref={elem => this.canvas = elem} />
+            </Col>
+            <Col col={col2} className="d-flex flex-column justify-content-around align-items-start">
+              <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateMaze}>Create Maze</Button>
+              <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.onClickCreateDungeon}>Create Dungeon</Button>
+            </Col>
+          </Row>
+        </Container>
+      </Section>
     );
   }
 }

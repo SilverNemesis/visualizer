@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button } from '../primitives'
+import { Section, Container, Row, Col, Button } from '../primitives'
 import Drawing from '../lib/Drawing'
 import Sort from '../lib/Sort'
 
@@ -109,23 +109,21 @@ class SortPage extends React.Component {
 
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col col="sm" className="top-case">
-            <canvas className="canvas" ref={elem => this.canvas = elem} />
-          </Col>
-        </Row>
-        <Row className="h-25 mt-4">
-          <Col col="sm" className="d-flex justify-content-around align-items-center">
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.shuffleAction}>Shuffle</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.reverseAction}>Reverse</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.bubbleSortAction}>Bubble Sort</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.insertionSortAction}>Insertion Sort</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortAction}>Merge Sort</Button>
-            <Button styles="primary large" disabled={this.state.running || this.state.rendering} onClick={this.quickSortAction}>Quick Sort</Button>
-          </Col>
-        </Row>
-      </Container>
+      <Section inner>
+        <Container fluid className="mt-5">
+          <Row row="sm">
+            <Col col="sm" className="d-flex justify-content-around align-items-center">
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.shuffleAction}>Shuffle</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.reverseAction}>Reverse</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.bubbleSortAction}>Bubble Sort</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.insertionSortAction}>Insertion Sort</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortAction}>Merge Sort</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.quickSortAction}>Quick Sort</Button>
+            </Col>
+          </Row>
+        </Container>
+        <canvas className="flex-grow-1" ref={elem => this.canvas = elem} />
+      </Section >
     );
   }
 }

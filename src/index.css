@@ -12,20 +12,25 @@ code {
     monospace;
 }
 
-.top-case {
-  height: 50vh;
-  display: flex;
-  align-items: flex-end;
+.section {
+ display: flex;
+ flex-direction: column;
 }
 
-.side-case {
-  width: 50vw;
-  height: 87vh;
-  display: flex;
-  align-items: flex-end;
+.section-outer {
+  height: 100vh;
 }
 
-.canvas {
-  width: 100%;
+.section-inner {
   height: 100%;
+  width: 100%;
+}
+
+.section-grow {
+  flex-grow: 1;
+}
+
+.section-center {
+  align-items: center;
+  justify-content: center;
 }

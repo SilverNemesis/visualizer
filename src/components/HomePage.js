@@ -8,6 +8,7 @@ const HomePage = () => {
   <Section grow center>
     <Route exact path="/" component={Home} />
     <Route path="/sort" component={Sort} />
+    <Route path="/maze" component={MazePage} />
   </Section>
 </Section>`
   return (
