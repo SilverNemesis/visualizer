@@ -5,32 +5,32 @@ class Sort {
     data[j] = t;
   }
 
-  shuffle(data, update, done) {
+  shuffle(data, initialize, update) {
     const n = data.length;
     for (let i = n - 1; i >= 0; i--) {
-      this.swap(data, i, Math.floor(Math.random() * i));
-      update(data);
+      const j = Math.floor(Math.random() * i);
+      this.swap(data, i, j);
+      update([i, data[i], j, data[j]]);
     }
-    done();
   }
 
-  reverse(data, update, done) {
+  reverse(data, initialize, update) {
     const n = data.length;
     for (let i = 0; i < n / 2; i++) {
-      this.swap(data, i, n - i - 1);
-      update(data);
+      const j = n - i - 1;
+      this.swap(data, i, j);
+      update([i, data[i], j, data[j]]);
     }
-    done();
   }
 
-  bubbleSort(data, update, done) {
+  bubbleSort(data, initialize, update) {
     const n = data.length - 1;
     for (let i = 0; i < n; i++) {
       let count = 0;
       for (let j = 0; j < n - i; j++) {
         if (data[j] > data[j + 1]) {
           this.swap(data, j, j + 1);
-          update(data);
+          update([j, data[j], j + 1, data[j + 1]]);
           count++;
         }
       }
@@ -38,26 +38,24 @@ class Sort {
         break;
       }
     }
-    done();
   }
 
-  insertionSort(data, update, done) {
+  insertionSort(data, initialize, update) {
     const n = data.length;
     for (let i = 1; i < n; i++) {
       const key = data[i];
       let j = i - 1;
       while (j >= 0 && data[j] > key) {
         data[j + 1] = data[j];
-        update(data);
+        update([j + 1, data[j + 1]]);
         j = j - 1;
       }
       data[j + 1] = key;
-      update(data);
+      update([j + 1, data[j + 1]]);
     }
-    done();
   }
 
-  mergeSort(data, update, done) {
+  mergeSort(data, initialize, update) {
     const sort = (data, l, r) => {
       if (l < r) {
         const m = Math.floor(l + (r - l) / 2);
@@ -80,11 +78,11 @@ class Sort {
           let index = start2;
           while (index !== start) {
             data[index] = data[index - 1];
-            update(data);
+            update([index, data[index]]);
             index--;
           }
           data[start] = value;
-          update(data);
+          update([start, data[start]]);
           start++;
           mid++;
           start2++;
@@ -92,20 +90,19 @@ class Sort {
       }
     }
     sort(data, 0, data.length - 1);
-    done();
   }
 
-  quickSort(data, update, done) {
+  quickSort(data, initialize, update) {
     const partition = (data, low, high) => {
       if (high - low > 2) {
         const mid = Math.floor(low + (high - low) / 2);
         if (data[low] < data[mid] && data[mid] < data[high]) {
           this.swap(data, mid, high);
-          update(data);
+          update([mid, data[mid], high, data[high]]);
         }
         else if (data[low] > data[mid] && data[mid] > data[high]) {
           this.swap(data, mid, high);
-          update(data);
+          update([mid, data[mid], high, data[high]]);
         }
       }
       const pivot = data[high];
@@ -114,11 +111,11 @@ class Sort {
         if (data[j] < pivot) {
           i++;
           this.swap(data, i, j);
-          update(data);
+          update([i, data[i], j, data[j]]);
         }
       }
       this.swap(data, i + 1, high);
-      update(data);
+      update([i + 1, data[i + 1], high, data[high]]);
       return (i + 1);
     }
     const sort = async (data, low, high) => {
@@ -129,7 +126,6 @@ class Sort {
       }
     }
     sort(data, 0, data.length - 1);
-    done();
   }
 }
 

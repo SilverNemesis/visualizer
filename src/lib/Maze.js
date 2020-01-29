@@ -17,13 +17,15 @@ class Maze {
     this._carveWithRegion = this._carveWithRegion.bind(this);
   }
 
-  createMaze(data, update) {
+  createMaze(data, initialize, update) {
     this._reset(data, 1);
+    initialize(data);
     this._createMaze(data, update, this._carve, { x: 1, y: 1 });
   }
 
-  createDungeon(data, update) {
+  createDungeon(data, initialize, update) {
     this._reset(data, 1);
+    initialize(data);
     const my = data.length;
     const mx = data[0].length;
     this.regions = [];
@@ -58,7 +60,7 @@ class Maze {
     const cells = [];
     let lastDir;
     carve(data, start);
-    update(data);
+    update([start.x, start.y, data[start.y][start.x]]);
     data[start.y][start.x] = 0;
     cells.push(start);
     while (cells.length > 0) {
@@ -77,9 +79,11 @@ class Maze {
         } else {
           dir = posCells[Math.floor(Math.random() * posCells.length)];
         }
-        carve(data, this._addDir(cell, dir, 1));
-        carve(data, this._addDir(cell, dir, 2));
-        update(data);
+        const c1 = this._addDir(cell, dir, 1);
+        const c2 = this._addDir(cell, dir, 2);
+        carve(data, c1);
+        carve(data, c2);
+        update([c1.x, c1.y, data[c1.y][c1.x], c2.x, c2.y, data[c2.y][c2.x]]);
         cells.push(this._addDir(cell, dir, 2));
         lastDir = dir;
       } else {
@@ -118,10 +122,12 @@ class Maze {
       rooms.push(room);
       this.region++;
       for (let xOffset = 0; xOffset < width; xOffset++) {
+        const updates = [];
         for (let yOffset = 0; yOffset < height; yOffset++) {
           this._carveWithRegion(data, { x: x + xOffset, y: y + yOffset });
+          updates.push(x + xOffset, y + yOffset, data[y + yOffset][x + xOffset])
         }
-        update(data);
+        update(updates);
       }
     }
   }
@@ -157,7 +163,7 @@ class Maze {
       const index = this._range(0, connectors.length - 1)
       const connector = connectors[index];
       this._carve(data, { x: connector.x, y: connector.y });
-      update(data);
+      update([connector.x, connector.y, data[connector.y][connector.x]]);
       const regions = connector.regions.map((region) => merged[region]);
       const dest = regions[0];
       const sources = regions.slice(1);
@@ -181,7 +187,7 @@ class Maze {
         }
         if (this._range(0, 99) === 0) {
           this._carve(data, { x: con.x, y: con.y });
-          update(data)
+          update([con.x, con.y, data[con.y][con.x]]);
         }
         return false;
       });
@@ -209,7 +215,7 @@ class Maze {
           }
           done = false;
           this._fill(data, { x, y });
-          update(data);
+          update([x, y, data[y][x]]);
         }
       }
     }

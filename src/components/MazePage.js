@@ -24,6 +24,7 @@ class MazePage extends React.Component {
     this.maze = new Maze();
 
     this.run = this.run.bind(this)
+    this.initialize = this.initialize.bind(this)
     this.update = this.update.bind(this)
     this.done = this.done.bind(this)
 
@@ -51,13 +52,17 @@ class MazePage extends React.Component {
   run(routine) {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      routine(this.clone(this.data), this.update);
+      routine(this.clone(this.data), this.initialize, this.update);
       this.done();
     });
   }
 
-  update(data) {
-    this.queue.push(this.clone(data));
+  initialize(data) {
+    this.data = this.clone(data);
+  }
+
+  update(change) {
+    this.queue.push(change);
   }
 
   done() {
@@ -90,7 +95,10 @@ class MazePage extends React.Component {
     this.timeStamp = timeStamp;
     while (this.queue.length > 0 && elapsed >= 6) {
       elapsed -= 6;
-      this.data = this.queue.shift();
+      const updates = this.queue.shift();
+      for (let i = 0; i < updates.length; i += 3) {
+        this.data[updates[i + 1]][updates[i]] = updates[i + 2];
+      }
     }
     this.timeStamp -= elapsed;
     this.drawing.drawGrid(this.canvas, this.data, ['black', 'sienna']);

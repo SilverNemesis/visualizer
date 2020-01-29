@@ -17,7 +17,8 @@ class SortPage extends React.Component {
     this.data = data;
     this.queue = [];
     this.drawing = new Drawing();
-    this.vector = new Sort();
+    this.sort = new Sort();
+    this.initialize = this.initialize.bind(this);
     this.update = this.update.bind(this)
     this.done = this.done.bind(this)
     this.renderCanvas = this.renderCanvas.bind(this);
@@ -37,8 +38,12 @@ class SortPage extends React.Component {
     window.cancelAnimationFrame(this.frame);
   }
 
-  update(data) {
-    this.queue.push([...data]);
+  initialize(data) {
+    this.data = this.clone(data);
+  }
+
+  update(change) {
+    this.queue.push(change);
   }
 
   done() {
@@ -50,42 +55,48 @@ class SortPage extends React.Component {
   shuffleAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.shuffle([...this.data], this.update, this.done);
+      this.sort.shuffle([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
   reverseAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.reverse([...this.data], this.update, this.done);
+      this.sort.reverse([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
   bubbleSortAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.bubbleSort([...this.data], this.update, this.done);
+      this.sort.bubbleSort([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
   insertionSortAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.insertionSort([...this.data], this.update, this.done);
+      this.sort.insertionSort([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
   mergeSortAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.mergeSort([...this.data], this.update, this.done);
+      this.sort.mergeSort([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
   quickSortAction() {
     this.setState({ running: true, rendering: true }, () => {
       this.timeStamp = undefined;
-      this.vector.quickSort([...this.data], this.update, this.done);
+      this.sort.quickSort([...this.data], this.initialize, this.update);
+      this.done();
     });
   }
 
@@ -97,7 +108,10 @@ class SortPage extends React.Component {
     this.timeStamp = timeStamp;
     while (this.queue.length > 0 && elapsed >= 8) {
       elapsed -= 8;
-      this.data = this.queue.shift();
+      const updates = this.queue.shift();
+      for (let i = 0; i < updates.length; i += 2) {
+        this.data[updates[i]] = updates[i + 1];
+      }
     }
     this.timeStamp -= elapsed;
     this.drawing.drawBars(this.canvas, this.data);
