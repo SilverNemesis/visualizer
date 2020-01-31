@@ -1,5 +1,6 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
+import Grid from '../lib/Grid'
 import Drawing from '../lib/Drawing'
 import Maze from '../lib/Maze'
 
@@ -10,29 +11,23 @@ class MazePage extends React.Component {
     for (let i = 0; i < 99; i++) {
       data.push(Array(99).fill(1));
     }
+
+    this.grid = new Grid(data);
+    this.drawing = new Drawing();
+    this.maze = new Maze();
+
+    this.run = this.run.bind(this)
+    this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
+    this.onClickCreateDungeon = this.onClickCreateDungeon.bind(this);
+    this.onResize = this.onResize.bind(this)
+    this.renderCanvas = this.renderCanvas.bind(this);
+
     this.state = {
       running: false,
       rendering: false,
       screenWidth: window.screen.width,
       screenHeight: window.screen.height
     };
-
-    this.data = data;
-    this.queue = [];
-
-    this.drawing = new Drawing();
-    this.maze = new Maze();
-
-    this.run = this.run.bind(this)
-    this.initialize = this.initialize.bind(this)
-    this.update = this.update.bind(this)
-    this.done = this.done.bind(this)
-
-    this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
-    this.onClickCreateDungeon = this.onClickCreateDungeon.bind(this);
-    this.onResize = this.onResize.bind(this)
-
-    this.renderCanvas = this.renderCanvas.bind(this);
   }
 
   componentDidMount() {
@@ -45,29 +40,10 @@ class MazePage extends React.Component {
     window.cancelAnimationFrame(this.frame);
   }
 
-  clone(items) {
-    return items.map(item => Array.isArray(item) ? this.clone(item) : item);
-  }
-
   run(routine) {
     this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      routine(this.clone(this.data), this.initialize, this.update);
-      this.done();
-    });
-  }
-
-  initialize(data) {
-    this.data = this.clone(data);
-  }
-
-  update(change) {
-    this.queue.push(change);
-  }
-
-  done() {
-    this.setState({
-      running: false
+      routine(this._clone(this.grid.getData()), this.grid.initialize, this.grid.update);
+      this.setState({ running: false });
     });
   }
 
@@ -88,24 +64,16 @@ class MazePage extends React.Component {
   }
 
   renderCanvas(timeStamp) {
-    if (!this.timeStamp) {
-      this.timeStamp = timeStamp;
-    }
-    let elapsed = timeStamp - this.timeStamp;
-    this.timeStamp = timeStamp;
-    while (this.queue.length > 0 && elapsed >= 6) {
-      elapsed -= 6;
-      const updates = this.queue.shift();
-      for (let i = 0; i < updates.length; i += 3) {
-        this.data[updates[i + 1]][updates[i]] = updates[i + 2];
-      }
-    }
-    this.timeStamp -= elapsed;
-    this.drawing.drawGrid(this.canvas, this.data, ['black', 'sienna']);
-    if (!this.state.running && this.queue.length === 0) {
+    const { animating, data } = this.grid.animate(timeStamp);
+    if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
+    this.drawing.drawGrid(this.canvas, data, ['black', 'sienna']);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
+  }
+
+  _clone(items) {
+    return items.map(item => Array.isArray(item) ? this._clone(item) : item);
   }
 
   render() {

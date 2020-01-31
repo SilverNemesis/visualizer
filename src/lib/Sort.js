@@ -1,35 +1,41 @@
 class Sort {
-  swap(data, i, j) {
-    const t = data[i];
-    data[i] = data[j];
-    data[j] = t;
+  constructor() {
+    this.shuffle = this.shuffle.bind(this);
+    this.reverse = this.reverse.bind(this);
+    this.bubbleSort = this.bubbleSort.bind(this);
+    this.insertionSort = this.insertionSort.bind(this);
+    this.mergeSort = this.mergeSort.bind(this);
+    this.quickSort = this.quickSort.bind(this);
   }
 
   shuffle(data, initialize, update) {
+    initialize();
     const n = data.length;
     for (let i = n - 1; i >= 0; i--) {
       const j = Math.floor(Math.random() * i);
-      this.swap(data, i, j);
+      this._swap(data, i, j);
       update([i, data[i], j, data[j]]);
     }
   }
 
   reverse(data, initialize, update) {
+    initialize();
     const n = data.length;
     for (let i = 0; i < n / 2; i++) {
       const j = n - i - 1;
-      this.swap(data, i, j);
+      this._swap(data, i, j);
       update([i, data[i], j, data[j]]);
     }
   }
 
   bubbleSort(data, initialize, update) {
+    initialize();
     const n = data.length - 1;
     for (let i = 0; i < n; i++) {
       let count = 0;
       for (let j = 0; j < n - i; j++) {
         if (data[j] > data[j + 1]) {
-          this.swap(data, j, j + 1);
+          this._swap(data, j, j + 1);
           update([j, data[j], j + 1, data[j + 1]]);
           count++;
         }
@@ -41,6 +47,7 @@ class Sort {
   }
 
   insertionSort(data, initialize, update) {
+    initialize();
     const n = data.length;
     for (let i = 1; i < n; i++) {
       const key = data[i];
@@ -56,6 +63,7 @@ class Sort {
   }
 
   mergeSort(data, initialize, update) {
+    initialize();
     const sort = (data, l, r) => {
       if (l < r) {
         const m = Math.floor(l + (r - l) / 2);
@@ -93,15 +101,16 @@ class Sort {
   }
 
   quickSort(data, initialize, update) {
+    initialize();
     const partition = (data, low, high) => {
       if (high - low > 2) {
         const mid = Math.floor(low + (high - low) / 2);
         if (data[low] < data[mid] && data[mid] < data[high]) {
-          this.swap(data, mid, high);
+          this._swap(data, mid, high);
           update([mid, data[mid], high, data[high]]);
         }
         else if (data[low] > data[mid] && data[mid] > data[high]) {
-          this.swap(data, mid, high);
+          this._swap(data, mid, high);
           update([mid, data[mid], high, data[high]]);
         }
       }
@@ -110,11 +119,11 @@ class Sort {
       for (let j = low; j <= high - 1; j++) {
         if (data[j] < pivot) {
           i++;
-          this.swap(data, i, j);
+          this._swap(data, i, j);
           update([i, data[i], j, data[j]]);
         }
       }
-      this.swap(data, i + 1, high);
+      this._swap(data, i + 1, high);
       update([i + 1, data[i + 1], high, data[high]]);
       return (i + 1);
     }
@@ -126,6 +135,12 @@ class Sort {
       }
     }
     sort(data, 0, data.length - 1);
+  }
+
+  _swap(data, i, j) {
+    const t = data[i];
+    data[i] = data[j];
+    data[j] = t;
   }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
+import Vector from '../lib/Vector'
 import Drawing from '../lib/Drawing'
 import Sort from '../lib/Sort'
 
@@ -14,20 +15,19 @@ class SortPage extends React.Component {
       running: false,
       rendering: false
     };
-    this.data = data;
-    this.queue = [];
+
+    this.vector = new Vector(data);
     this.drawing = new Drawing();
     this.sort = new Sort();
-    this.initialize = this.initialize.bind(this);
-    this.update = this.update.bind(this)
-    this.done = this.done.bind(this)
-    this.renderCanvas = this.renderCanvas.bind(this);
+
+    this.run = this.run.bind(this);
     this.shuffleAction = this.shuffleAction.bind(this);
     this.reverseAction = this.reverseAction.bind(this);
     this.bubbleSortAction = this.bubbleSortAction.bind(this);
     this.insertionSortAction = this.insertionSortAction.bind(this);
     this.mergeSortAction = this.mergeSortAction.bind(this);
     this.quickSortAction = this.quickSortAction.bind(this);
+    this.renderCanvas = this.renderCanvas.bind(this);
   }
 
   componentDidMount() {
@@ -38,86 +38,43 @@ class SortPage extends React.Component {
     window.cancelAnimationFrame(this.frame);
   }
 
-  initialize(data) {
-    this.data = this.clone(data);
-  }
-
-  update(change) {
-    this.queue.push(change);
-  }
-
-  done() {
-    this.setState({
-      running: false
+  run(routine) {
+    this.setState({ running: true, rendering: true }, () => {
+      routine([...this.vector.getData()], this.vector.initialize, this.vector.update);
+      this.setState({ running: false });
     });
   }
 
   shuffleAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.shuffle([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.shuffle);
   }
 
   reverseAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.reverse([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.reverse);
   }
 
   bubbleSortAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.bubbleSort([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.bubbleSort);
   }
 
   insertionSortAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.insertionSort([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.insertionSort);
   }
 
   mergeSortAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.mergeSort([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.mergeSort);
   }
 
   quickSortAction() {
-    this.setState({ running: true, rendering: true }, () => {
-      this.timeStamp = undefined;
-      this.sort.quickSort([...this.data], this.initialize, this.update);
-      this.done();
-    });
+    this.run(this.sort.quickSort);
   }
 
   renderCanvas(timeStamp) {
-    if (!this.timeStamp) {
-      this.timeStamp = timeStamp;
-    }
-    let elapsed = timeStamp - this.timeStamp;
-    this.timeStamp = timeStamp;
-    while (this.queue.length > 0 && elapsed >= 8) {
-      elapsed -= 8;
-      const updates = this.queue.shift();
-      for (let i = 0; i < updates.length; i += 2) {
-        this.data[updates[i]] = updates[i + 1];
-      }
-    }
-    this.timeStamp -= elapsed;
-    this.drawing.drawBars(this.canvas, this.data);
-    if (!this.state.running && this.queue.length === 0) {
+    const { animating, data } = this.vector.animate(timeStamp);
+    if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
+    this.drawing.drawBars(this.canvas, data);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
