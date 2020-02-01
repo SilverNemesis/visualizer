@@ -1,8 +1,8 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
-import Vector from '../lib/Vector'
-import Drawing from '../lib/Drawing'
-import Sort from '../lib/Sort'
+import AnimatedVector from '../lib/AnimatedVector'
+import { drawBars } from '../lib/Drawing'
+import * as sort from '../lib/Sort'
 
 class SortPage extends React.Component {
   constructor(props) {
@@ -16,9 +16,7 @@ class SortPage extends React.Component {
       rendering: false
     };
 
-    this.vector = new Vector(data);
-    this.drawing = new Drawing();
-    this.sort = new Sort();
+    this.vector = new AnimatedVector(data, 8);
 
     this.run = this.run.bind(this);
     this.shuffleAction = this.shuffleAction.bind(this);
@@ -46,27 +44,27 @@ class SortPage extends React.Component {
   }
 
   shuffleAction() {
-    this.run(this.sort.shuffle);
+    this.run(sort.shuffle);
   }
 
   reverseAction() {
-    this.run(this.sort.reverse);
+    this.run(sort.reverse);
   }
 
   bubbleSortAction() {
-    this.run(this.sort.bubbleSort);
+    this.run(sort.bubbleSort);
   }
 
   insertionSortAction() {
-    this.run(this.sort.insertionSort);
+    this.run(sort.insertionSort);
   }
 
   mergeSortAction() {
-    this.run(this.sort.mergeSort);
+    this.run(sort.mergeSort);
   }
 
   quickSortAction() {
-    this.run(this.sort.quickSort);
+    this.run(sort.quickSort);
   }
 
   renderCanvas(timeStamp) {
@@ -74,7 +72,7 @@ class SortPage extends React.Component {
     if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
-    this.drawing.drawBars(this.canvas, data);
+    drawBars(this.canvas, data);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 

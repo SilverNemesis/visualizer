@@ -1,8 +1,8 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
-import Grid from '../lib/Grid'
-import Drawing from '../lib/Drawing'
-import Maze from '../lib/Maze'
+import AnimatedGrid from '../lib/AnimatedGrid'
+import { drawGrid } from '../lib/Drawing'
+import { createMaze, createDungeon } from '../lib/Maze'
 
 class MazePage extends React.Component {
   constructor(props) {
@@ -12,9 +12,7 @@ class MazePage extends React.Component {
       data.push(Array(99).fill(1));
     }
 
-    this.grid = new Grid(data);
-    this.drawing = new Drawing();
-    this.maze = new Maze();
+    this.grid = new AnimatedGrid(data, 6);
 
     this.run = this.run.bind(this)
     this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
@@ -48,11 +46,11 @@ class MazePage extends React.Component {
   }
 
   onClickCreateMaze() {
-    this.run(this.maze.createMaze);
+    this.run(createMaze);
   }
 
   onClickCreateDungeon() {
-    this.run(this.maze.createDungeon);
+    this.run(createDungeon);
   }
 
   onResize() {
@@ -68,7 +66,7 @@ class MazePage extends React.Component {
     if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
-    this.drawing.drawGrid(this.canvas, data, ['black', 'sienna']);
+    drawGrid(this.canvas, data, ['black', 'sienna']);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
