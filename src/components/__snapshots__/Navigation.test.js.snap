@@ -36,6 +36,12 @@ exports[`renders correctly 1`] = `
       >
         Maze
       </ForwardRef>
+      <ForwardRef
+        className="nav-link"
+        to="/test"
+      >
+        Test
+      </ForwardRef>
     </NavBarNav>
   </NavBarToggler>
 </NavBar>
