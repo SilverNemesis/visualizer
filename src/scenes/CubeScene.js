@@ -1,5 +1,5 @@
 import * as mat4 from 'gl-matrix/mat4';
-import { clearScreen } from '../utility'
+import { clearScreen, degreesToRadians } from '../utility'
 import CubeModel from '../models/CubeModel';
 
 class CubeScene {
@@ -13,8 +13,7 @@ class CubeScene {
     const model = new CubeModel(gl);
     this.scene = {
       actors: [],
-      camera: [0.0, 0.0, 50.0],
-      cameraRotation: 0.0
+      camera: [0.0, 0.0, 50.0]
     };
     for (let i = 0; i < data.length; i++) {
       this.scene.actors.push(
@@ -22,7 +21,12 @@ class CubeScene {
           model,
           location: [0.5 * (i - ((data.length - 1) / 2)), 0.0, 0.0],
           scale: [0.1, 0.1 * (data[i] + 1), 0.2],
-          rotation: 0.0
+          rotations: [
+            {
+              angle: degreesToRadians(-25),
+              vector: [1, 0, 0]
+            }
+          ]
         }
       );
     }
@@ -49,33 +53,15 @@ class CubeScene {
       this._renderActor(projectionMatrix, viewMatrix, actor);
       this._animateActor(actor, deltaTime, data[i]);
     }
-
-    this.totalTime += deltaTime;
-    if (this.totalTime >= 10) {
-      this.totalTime -= 10;
-      this.shuffle(data);
-    }
-
-    scene.cameraRotation += deltaTime;
-  }
-
-  shuffle(data) {
-    const _swap = (data, i, j) => {
-      const t = data[i];
-      data[i] = data[j];
-      data[j] = t;
-    }
-    const n = data.length;
-    for (let i = n - 1; i >= 0; i--) {
-      const j = Math.floor(Math.random() * i);
-      _swap(data, i, j);
-    }
   }
 
   _renderActor(projectionMatrix, viewMatrix, actor) {
     const model = actor.model;
     const modelMatrix = mat4.create();
-    mat4.rotate(modelMatrix, modelMatrix, actor.rotation, [1, 0, 0]);
+    for (let i = 0; i < actor.rotations.length; i++) {
+      const rotation = actor.rotations[i];
+      mat4.rotate(modelMatrix, modelMatrix, rotation.angle, rotation.vector);
+    }
     mat4.translate(modelMatrix, modelMatrix, actor.location);
     mat4.scale(modelMatrix, modelMatrix, actor.scale);
     model.draw(projectionMatrix, viewMatrix, modelMatrix);
@@ -83,7 +69,6 @@ class CubeScene {
 
   _animateActor(actor, deltaTime, height) {
     actor.scale[1] = 0.1 * (height + 1);
-    actor.rotation += deltaTime;
   }
 }
 
