@@ -45,7 +45,7 @@ class TestPage extends React.Component {
   render() {
     return (
       <Section inner>
-        <canvas className="flex-grow-1" ref={elem => this.canvas = elem} />
+        <canvas className="canvas" ref={elem => this.canvas = elem} />
       </Section >
     );
   }

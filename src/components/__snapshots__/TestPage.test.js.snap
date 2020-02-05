@@ -5,7 +5,7 @@ exports[`renders correctly 1`] = `
   inner={true}
 >
   <canvas
-    className="flex-grow-1"
+    className="canvas"
   />
 </Section>
 `;
