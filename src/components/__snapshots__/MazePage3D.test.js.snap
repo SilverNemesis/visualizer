@@ -34,6 +34,7 @@ exports[`renders correctly 1`] = `
   </Container>
   <canvas
     className="canvas"
+    onClick={[Function]}
   />
 </Section>
 `;

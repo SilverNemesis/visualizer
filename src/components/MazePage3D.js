@@ -2,6 +2,8 @@ import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedGrid from '../lib/AnimatedGrid'
 import MazeScene from '../scenes/MazeScene';
+import MazeModel from '../models/MazeModel';
+import MazeModelPerPixel from '../models/MazeModelPerPixel';
 import { createMaze, createDungeon } from '../lib/Maze'
 
 const size = 69;
@@ -11,14 +13,15 @@ class MazePage3D extends React.Component {
     super(props);
 
     this.scenes = [
-      new MazeScene()
+      new MazeScene(MazeModel),
+      new MazeScene(MazeModelPerPixel)
     ];
 
     const data = []
     for (let i = 0; i < size; i++) {
       data.push(Array(size).fill(1));
     }
-    this.grid = new AnimatedGrid(data, 16);
+    this.grid = new AnimatedGrid(data, 12);
 
     this.state = {
       sceneIndex: 0,
@@ -29,6 +32,7 @@ class MazePage3D extends React.Component {
     this.run = this.run.bind(this);
     this.onClickCreateMaze = this.onClickCreateMaze.bind(this);
     this.onClickCreateDungeon = this.onClickCreateDungeon.bind(this);
+    this.onClickCanvas = this.onClickCanvas.bind(this);
     this.renderCanvas = this.renderCanvas.bind(this);
   }
 
@@ -43,6 +47,7 @@ class MazePage3D extends React.Component {
     } else {
       const maze = { width: size, height: size, data: this.grid.getData() };
       this.scenes[0].initScene(this.gl, maze);
+      this.scenes[1].initScene(this.gl, maze);
       this.frame = window.requestAnimationFrame(this.renderCanvas);
     }
   }
@@ -66,6 +71,12 @@ class MazePage3D extends React.Component {
     this.run(createDungeon);
   }
 
+  onClickCanvas(event) {
+    this.setState({
+      sceneIndex: 1 - this.state.sceneIndex
+    }, () => { console.log(this.state) });
+  }
+
   renderCanvas(timeStamp) {
     if (!this.timeStamp) {
       this.timeStamp = timeStamp;
@@ -76,7 +87,10 @@ class MazePage3D extends React.Component {
     if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
-    this.scenes[this.state.sceneIndex].drawScene(this.gl, deltaTime, { width: size, height: size, data });
+    this.scenes[this.state.sceneIndex].drawScene(this.gl, { width: size, height: size, data });
+    for (let i = 0; i < this.scenes.length; i++) {
+      this.scenes[i].animateScene(deltaTime);
+    }
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
@@ -95,7 +109,7 @@ class MazePage3D extends React.Component {
             </Col>
           </Row>
         </Container>
-        <canvas className="canvas" ref={elem => this.canvas = elem} />
+        <canvas className="canvas" ref={elem => this.canvas = elem} onClick={this.onClickCanvas} />
       </Section >
     );
   }

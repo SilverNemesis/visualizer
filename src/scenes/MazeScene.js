@@ -1,16 +1,17 @@
 import * as mat4 from 'gl-matrix/mat4';
 import { clearScreen, degreesToRadians } from '../utility'
-import MazeModel from '../models/MazeModel';
 
 class MazeScene {
-  constructor() {
+  constructor(MazeModel) {
+    this.MazeModel = MazeModel;
     this.initScene = this.initScene.bind(this);
     this.drawScene = this.drawScene.bind(this);
+    this.animateScene = this.animateScene.bind(this);
     this.totalDelta = 0.0;
   }
 
   initScene(gl, maze) {
-    const model = new MazeModel(gl, maze);
+    const model = new this.MazeModel(gl, maze);
     this.scene = {
       actors: [
         {
@@ -23,7 +24,7 @@ class MazeScene {
     };
   }
 
-  drawScene(gl, deltaTime, maze) {
+  drawScene(gl, maze) {
     const scene = this.scene;
 
     clearScreen(gl);
@@ -43,7 +44,6 @@ class MazeScene {
       const actor = scene.actors[i];
       actor.model.update(maze);
       this._renderActor(projectionMatrix, viewMatrix, actor);
-      this._animateActor(deltaTime, actor);
     }
   }
 
@@ -56,6 +56,15 @@ class MazeScene {
     mat4.rotate(modelMatrix, modelMatrix, actor.rotation.angle, actor.rotation.axis);
 
     model.draw(projectionMatrix, viewMatrix, modelMatrix);
+  }
+
+  animateScene(deltaTime) {
+    const scene = this.scene;
+
+    for (let i = 0; i < scene.actors.length; i++) {
+      const actor = scene.actors[i];
+      this._animateActor(deltaTime, actor);
+    }
   }
 
   _animateActor(deltaTime, actor) {
