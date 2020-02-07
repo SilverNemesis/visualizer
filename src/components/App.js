@@ -5,7 +5,8 @@ import { Section } from '../primitives'
 import HomePage from './HomePage'
 import SortPage from './SortPage'
 import MazePage from './MazePage'
-import TestPage from './TestPage'
+import SortPage3D from './SortPage3D'
+import MazePage3D from './MazePage3D'
 
 const App = () => {
   return (
@@ -17,7 +18,8 @@ const App = () => {
         <Route exact path="/" component={HomePage} />
         <Route path="/sort" component={SortPage} />
         <Route path="/maze" component={MazePage} />
-        <Route path="/test" component={TestPage} />
+        <Route path="/sort3d" component={SortPage3D} />
+        <Route path="/maze3d" component={MazePage3D} />
       </Section>
     </Section>
   );

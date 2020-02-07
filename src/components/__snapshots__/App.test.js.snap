@@ -26,7 +26,11 @@ exports[`renders correctly 1`] = `
     />
     <Route
       component={[Function]}
-      path="/test"
+      path="/sort3d"
+    />
+    <Route
+      component={[Function]}
+      path="/maze3d"
     />
   </Section>
 </Section>

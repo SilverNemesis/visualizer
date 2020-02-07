@@ -38,9 +38,15 @@ exports[`renders correctly 1`] = `
       </ForwardRef>
       <ForwardRef
         className="nav-link"
-        to="/test"
+        to="/sort3d"
       >
-        Test
+        Sort 3D
+      </ForwardRef>
+      <ForwardRef
+        className="nav-link"
+        to="/maze3d"
+      >
+        Maze 3D
       </ForwardRef>
     </NavBarNav>
   </NavBarToggler>

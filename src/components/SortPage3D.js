@@ -5,7 +5,7 @@ import * as sort from '../lib/Sort'
 import CubeScene from '../scenes/CubeScene';
 import LightedCubeScene from '../scenes/LightedCubeScene';
 
-class TestPage extends React.Component {
+class SortPage3D extends React.Component {
   constructor(props) {
     super(props);
 
@@ -128,4 +128,4 @@ class TestPage extends React.Component {
   }
 }
 
-export default TestPage;
+export default SortPage3D;
