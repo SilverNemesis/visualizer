@@ -1,8 +1,8 @@
 import * as mat4 from 'gl-matrix/mat4';
 import { clearScreen, degreesToRadians } from '../utility'
-import CubeModel from '../models/CubeModel';
+import LightedCubeModel from '../models/LightedCubeModel';
 
-class CubeScene {
+class LightedCubeScene {
   constructor() {
     this.totalTime = 0.0;
     this.initScene = this.initScene.bind(this);
@@ -10,11 +10,10 @@ class CubeScene {
   }
 
   initScene(gl, data) {
-    const model = new CubeModel(gl);
+    const model = new LightedCubeModel(gl);
     this.scene = {
       actors: [],
-      camera: [0.0, 0.0, 50.0],
-      cameraAngle: 0.0
+      camera: [0.0, 0.0, 50.0]
     };
     for (let i = 0; i < data.length; i++) {
       this.scene.actors.push(
@@ -46,7 +45,6 @@ class CubeScene {
     mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
     const viewMatrix = mat4.create();
-    mat4.rotate(viewMatrix, viewMatrix, scene.cameraAngle, [0, 1, 0]);
     mat4.translate(viewMatrix, viewMatrix, scene.camera);
     mat4.invert(viewMatrix, viewMatrix)
 
@@ -55,8 +53,6 @@ class CubeScene {
       this._renderActor(projectionMatrix, viewMatrix, actor);
       this._animateActor(actor, deltaTime, data[i]);
     }
-
-    scene.cameraAngle += 0.001 * deltaTime;
   }
 
   _renderActor(projectionMatrix, viewMatrix, actor) {
@@ -73,7 +69,8 @@ class CubeScene {
 
   _animateActor(actor, deltaTime, height) {
     actor.scale[1] = 0.1 * (height + 1);
+    actor.rotations[0].angle += deltaTime * 0.002;
   }
 }
 
-export default CubeScene;
+export default LightedCubeScene;

@@ -3,12 +3,16 @@ import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedVector from '../lib/AnimatedVector'
 import * as sort from '../lib/Sort'
 import CubeScene from '../scenes/CubeScene';
+import LightedCubeScene from '../scenes/LightedCubeScene';
 
 class TestPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.scene = new CubeScene();
+    this.scenes = [
+      new CubeScene(),
+      new LightedCubeScene()
+    ];
 
     const data = [];
     for (let i = 0; i < 100; i++) {
@@ -17,6 +21,7 @@ class TestPage extends React.Component {
     this.vector = new AnimatedVector(data, 8);
 
     this.state = {
+      sceneIndex: 0,
       running: false,
       rendering: false
     };
@@ -28,6 +33,7 @@ class TestPage extends React.Component {
     this.insertionSortAction = this.insertionSortAction.bind(this);
     this.mergeSortAction = this.mergeSortAction.bind(this);
     this.quickSortAction = this.quickSortAction.bind(this);
+    this.onClickCanvas = this.onClickCanvas.bind(this);
     this.renderCanvas = this.renderCanvas.bind(this);
   }
 
@@ -40,7 +46,8 @@ class TestPage extends React.Component {
     if (this.gl === null) {
       alert("Unable to initialize WebGL. Your browser or machine may not support it.");
     } else {
-      this.scene.initScene(this.gl, this.vector.getData());
+      this.scenes[0].initScene(this.gl, this.vector.getData());
+      this.scenes[1].initScene(this.gl, this.vector.getData());
       this.frame = window.requestAnimationFrame(this.renderCanvas);
     }
   }
@@ -80,6 +87,12 @@ class TestPage extends React.Component {
     this.run(sort.quickSort);
   }
 
+  onClickCanvas() {
+    this.setState({
+      sceneIndex: 1 - this.state.sceneIndex
+    });
+  }
+
   renderCanvas(timeStamp) {
     if (!this.timeStamp) {
       this.timeStamp = timeStamp;
@@ -90,7 +103,7 @@ class TestPage extends React.Component {
     if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
-    this.scene.drawScene(this.gl, deltaTime, data);
+    this.scenes[this.state.sceneIndex].drawScene(this.gl, deltaTime, data);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 
@@ -109,7 +122,7 @@ class TestPage extends React.Component {
             </Col>
           </Row>
         </Container>
-        <canvas className="canvas" ref={elem => this.canvas = elem} />
+        <canvas className="canvas" ref={elem => this.canvas = elem} onClick={this.onClickCanvas} />
       </Section >
     );
   }
