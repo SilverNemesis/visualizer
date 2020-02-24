@@ -45,6 +45,8 @@ class MazePage3D extends React.Component {
     if (this.gl === null) {
       alert("Unable to initialize WebGL. Your browser or machine may not support it.");
     } else {
+      this.gl.enable(this.gl.CULL_FACE);
+      this.gl.cullFace(this.gl.BACK);
       const maze = { width: size, height: size, data: this.grid.getData() };
       this.scenes[0].initScene(this.gl, maze);
       this.scenes[1].initScene(this.gl, maze);

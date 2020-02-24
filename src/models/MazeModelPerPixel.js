@@ -15,9 +15,10 @@ class MazeModel {
         vertexNormal: gl.getAttribLocation(shaderProgram, 'vertNormal')
       },
       uniformLocations: {
-        projectionMatrix: gl.getUniformLocation(shaderProgram, 'camera'),
-        modelViewMatrix: gl.getUniformLocation(shaderProgram, 'model'),
-        normalMatrix: gl.getUniformLocation(shaderProgram, 'normalMatrix'),
+        projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+        viewMatrix: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
+        modelMatrix: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
+        normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
         light: {
           position: gl.getUniformLocation(shaderProgram, 'light.position'),
           color: gl.getUniformLocation(shaderProgram, 'light.color')
@@ -73,18 +74,17 @@ class MazeModel {
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
-    const modelViewMatrix = mat4.create();
-    mat4.multiply(modelViewMatrix, viewMatrix, modelMatrix);
-
     const normalMatrix = mat4.create();
-    mat4.invert(normalMatrix, modelViewMatrix);
+    mat4.invert(normalMatrix, modelMatrix);
     mat4.transpose(normalMatrix, normalMatrix);
 
     gl.useProgram(model.program);
     gl.uniformMatrix4fv(model.uniformLocations.projectionMatrix, false, projectionMatrix);
-    gl.uniformMatrix4fv(model.uniformLocations.modelViewMatrix, false, modelViewMatrix);
+    gl.uniformMatrix4fv(model.uniformLocations.modelMatrix, false, modelMatrix);
+    gl.uniformMatrix4fv(model.uniformLocations.viewMatrix, false, viewMatrix);
     gl.uniformMatrix4fv(model.uniformLocations.normalMatrix, false, normalMatrix);
-    gl.uniform3f(model.uniformLocations.light.position, 50.0, 40.0, -30.0);
+
+    gl.uniform3f(model.uniformLocations.light.position, 0.0, 14.0, 0.0);
     gl.uniform3f(model.uniformLocations.light.color, 1.0, 1.0, 1.0);
 
     {
@@ -97,51 +97,50 @@ class MazeModel {
 
   _initShaders(gl) {
     const vsSource = `
-      uniform mat4 camera;
-      uniform mat4 model;
+      precision mediump float;
+
+      uniform mat4 uProjectionMatrix;
+      uniform mat4 uViewMatrix;
+      uniform mat4 uModelMatrix;
+      uniform mat4 uNormalMatrix;
 
       attribute vec3 vert;
       attribute vec4 vertColor;
       attribute vec3 vertNormal;
 
-      varying lowp vec3 fragVert;
-      varying lowp vec4 fragColor;
-      varying lowp vec3 fragNormal;
+      varying vec3 fragPosition;
+      varying vec4 fragColor;
+      varying vec3 fragNormal;
 
       void main(void) {
+        fragPosition = vec3(uModelMatrix * vec4(vert, 1));
         fragColor = vertColor;
-        fragNormal = vertNormal;
-        fragVert = vert;
-        gl_Position = camera * model * vec4(vert, 1);
+        fragNormal = vec3(uNormalMatrix * vec4(vertNormal, 1));
+        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(vert, 1);
       }
     `;
 
     const fsSource = `
-      precision highp float;
+      precision mediump float;
 
-      uniform mat4 model;
-      uniform mat4 normalMatrix;
-      
       uniform struct {
         vec3 position;
         vec3 color;
       } light;
       
-      varying lowp vec4 fragColor;
-      varying lowp vec3 fragNormal;
-      varying lowp vec3 fragVert;
+      varying vec3 fragPosition;
+      varying vec4 fragColor;
+      varying vec3 fragNormal;
       
-      void main() {
-          vec3 normal = vec3(normalize(normalMatrix * vec4(fragNormal, 1)));
-          
-          vec3 fragPosition = vec3(model * vec4(fragVert, 1));
-          
-          float ambient = 0.3;
-          vec3 surfaceToLight = light.position - fragPosition;
-          float bright = dot(normal, surfaceToLight) / (length(surfaceToLight) * length(normal));
-          bright = clamp(bright, 0.0, 1.0);
-      
-          gl_FragColor = vec4(ambient * fragColor.rgb + bright * light.color * fragColor.rgb, fragColor.a);
+      void main() {          
+          float ambient = 0.0;
+
+          vec3 light_dir = light.position - fragPosition;
+          float distance = length(light_dir);
+          float diffuse = dot(fragNormal, normalize(light_dir));
+          float point_intensity = clamp(12000.0 / (distance * distance), 0.0, 1.0) * diffuse;
+
+          gl_FragColor = vec4(ambient * fragColor.rgb + point_intensity * light.color * fragColor.rgb, fragColor.a);
       }
     `;
 
@@ -230,17 +229,17 @@ class MazeModel {
       }
     }
 
-    const floorColor = [.7, .7, .7, 1];
-    const ceilingColor = [.6, .6, .6, 1];
-    const wallColor_Top = [.6, .6, .6, 1];
-    const wallColor_Bottom = [.6, .6, .6, 1];
-    const wallColor_Left = [.6, .6, .6, 1];
-    const wallColor_Right = [.6, .6, .6, 1];
+    const floorColor = [0.52, 0.34, 0.14, 1];
+    const ceilingColor = [0.0, 1.0, 0.0, 1];
+    const wallColor_Top = [0.25, 0.5, 0.0, 1];
+    const wallColor_Bottom = [0.25, 0.5, 0.0, 1];
+    const wallColor_Left = [0.25, 0.5, 0.0, 1];
+    const wallColor_Right = [0.25, 0.5, 0.0, 1];
 
     const floorNormal = [0.0, 0.0, 1.0];
     const ceilingNormal = [0.0, 0.0, 1.0];
     const wallNormal_Top = [0.0, -1.0, 0.0];
-    const wallNormal_Bottom = [0.0, 1.0, 1.0];
+    const wallNormal_Bottom = [0.0, 1.0, 0.0];
     const wallNormal_Left = [-1.0, 0.0, 0.0];
     const wallNormal_Right = [1.0, 0.0, 0.0];
 
@@ -263,11 +262,11 @@ class MazeModel {
           }
 
           if (x === 0 || maze.data[y][x - 1] === 0) {
-            addSquareYZ(top, bottom, 0.0, 1.0, left, wallColor_Left, wallNormal_Left);
+            addSquareYZ(bottom, top, 0.0, 1.0, left, wallColor_Left, wallNormal_Left);
           }
 
           if (y === maze.height - 1 || maze.data[y + 1][x] === 0) {
-            addSquareXZ(left, right, 0.0, 1.0, bottom, wallColor_Bottom, wallNormal_Bottom);
+            addSquareXZ(right, left, 0.0, 1.0, bottom, wallColor_Bottom, wallNormal_Bottom);
           }
 
           if (x === maze.width - 1 || maze.data[y][x + 1] === 0) {

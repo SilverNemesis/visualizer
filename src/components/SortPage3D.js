@@ -46,6 +46,8 @@ class SortPage3D extends React.Component {
     if (this.gl === null) {
       alert("Unable to initialize WebGL. Your browser or machine may not support it.");
     } else {
+      this.gl.enable(this.gl.CULL_FACE);
+      this.gl.cullFace(this.gl.BACK);
       this.scenes[0].initScene(this.gl, this.vector.getData());
       this.scenes[1].initScene(this.gl, this.vector.getData());
       this.frame = window.requestAnimationFrame(this.renderCanvas);
