@@ -1,8 +1,8 @@
 export function shuffle(data, initialize, update) {
   initialize();
   const n = data.length;
-  for (let i = n - 1; i >= 0; i--) {
-    const j = Math.floor(Math.random() * i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
     _swap(data, i, j);
     update([i, data[i], j, data[j]]);
   }
