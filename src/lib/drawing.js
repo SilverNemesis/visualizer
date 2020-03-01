@@ -12,7 +12,7 @@ export function drawBars(canvas, data) {
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = 'black'
   for (let i = 0; i < n; i++) {
-    const barHeight = Math.floor((data[i] + 1) / 100 * .8 * h);
+    const barHeight = Math.floor((data[i] + 1) / n * .8 * h);
     ctx.fillRect(.05 * w + i * step, .9 * h - barHeight, barWidth, barHeight);
   }
 }
