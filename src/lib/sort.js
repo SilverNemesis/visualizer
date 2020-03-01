@@ -52,7 +52,7 @@ export function insertionSort(data, initialize, update) {
   }
 }
 
-export function mergeSort(data, initialize, update) {
+export function mergeSortInPlace(data, initialize, update) {
   initialize();
   const sort = (data, l, r) => {
     if (l < r) {
@@ -63,10 +63,10 @@ export function mergeSort(data, initialize, update) {
     }
   }
   const merge = (data, start, mid, end) => {
-    let start2 = mid + 1;
-    if (data[mid] <= data[start2]) {
+    if (data[mid] < data[mid + 1]) {
       return;
     }
+    let start2 = mid + 1;
     while (start <= mid && start2 <= end) {
       if (data[start] <= data[start2]) {
         start++;
@@ -85,6 +85,59 @@ export function mergeSort(data, initialize, update) {
         mid++;
         start2++;
       }
+    }
+  }
+  sort(data, 0, data.length - 1);
+}
+
+export function mergeSort(data, initialize, update) {
+  initialize();
+  const aux = new Array(data.size);
+  const sort = (data, l, r) => {
+    if (l < r) {
+      const m = Math.floor(l + (r - l) / 2);
+      sort(data, l, m);
+      sort(data, m + 1, r);
+      merge(data, l, m, r);
+    }
+  }
+  const merge = (data, start, mid, end) => {
+    if (data[mid] < data[mid + 1]) {
+      return;
+    }
+    const n = end - start + 1
+    for (let i = 0; i < n; i++) {
+      aux[i] = data[i + start]
+    }
+    const n1 = mid - start + 1;
+    const n2 = end - start + 1;
+    let i = 0;
+    let j = n1;
+    let k = start;
+    while (i < n1 && j < n2) {
+      if (aux[i] <= aux[j]) {
+        data[k] = aux[i];
+        update([k, data[k]]);
+        i++;
+      }
+      else {
+        data[k] = aux[j];
+        update([k, data[k]]);
+        j++;
+      }
+      k++;
+    }
+    while (i < n1) {
+      data[k] = aux[i];
+      update([k, data[k]]);
+      i++;
+      k++;
+    }
+    while (j < n2) {
+      data[k] = aux[j];
+      update([k, data[k]]);
+      j++;
+      k++;
     }
   }
   sort(data, 0, data.length - 1);

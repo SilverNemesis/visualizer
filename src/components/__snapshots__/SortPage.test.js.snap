@@ -48,6 +48,13 @@ exports[`renders correctly 1`] = `
           onClick={[Function]}
           styles="primary"
         >
+          Merge Sort (In Place)
+        </Button>
+        <Button
+          disabled={false}
+          onClick={[Function]}
+          styles="primary"
+        >
           Merge Sort
         </Button>
         <Button

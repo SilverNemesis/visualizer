@@ -1,8 +1,8 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedVector from '../lib/AnimatedVector'
+import { shuffle, reverse, bubbleSort, insertionSort, mergeSortInPlace, mergeSort, quickSort } from '../lib/sort'
 import { drawBars } from '../lib/drawing'
-import * as sort from '../lib/sort'
 
 class SortPage extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class SortPage extends React.Component {
     this.reverseAction = this.reverseAction.bind(this);
     this.bubbleSortAction = this.bubbleSortAction.bind(this);
     this.insertionSortAction = this.insertionSortAction.bind(this);
+    this.mergeSortInPlaceAction = this.mergeSortInPlaceAction.bind(this);
     this.mergeSortAction = this.mergeSortAction.bind(this);
     this.quickSortAction = this.quickSortAction.bind(this);
     this.renderCanvas = this.renderCanvas.bind(this);
@@ -44,27 +45,31 @@ class SortPage extends React.Component {
   }
 
   shuffleAction() {
-    this.run(sort.shuffle);
+    this.run(shuffle);
   }
 
   reverseAction() {
-    this.run(sort.reverse);
+    this.run(reverse);
   }
 
   bubbleSortAction() {
-    this.run(sort.bubbleSort);
+    this.run(bubbleSort);
   }
 
   insertionSortAction() {
-    this.run(sort.insertionSort);
+    this.run(insertionSort);
+  }
+
+  mergeSortInPlaceAction() {
+    this.run(mergeSortInPlace);
   }
 
   mergeSortAction() {
-    this.run(sort.mergeSort);
+    this.run(mergeSort);
   }
 
   quickSortAction() {
-    this.run(sort.quickSort);
+    this.run(quickSort);
   }
 
   renderCanvas(timeStamp) {
@@ -86,6 +91,7 @@ class SortPage extends React.Component {
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.reverseAction}>Reverse</Button>
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.bubbleSortAction}>Bubble Sort</Button>
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.insertionSortAction}>Insertion Sort</Button>
+              <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortInPlaceAction}>Merge Sort (In Place)</Button>
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.mergeSortAction}>Merge Sort</Button>
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.quickSortAction}>Quick Sort</Button>
             </Col>
