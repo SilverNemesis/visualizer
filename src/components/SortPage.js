@@ -1,8 +1,8 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedVector from '../lib/AnimatedVector'
-import { drawBars } from '../lib/Drawing'
-import * as sort from '../lib/Sort'
+import { drawBars } from '../lib/drawing'
+import * as sort from '../lib/sort'
 
 class SortPage extends React.Component {
   constructor(props) {

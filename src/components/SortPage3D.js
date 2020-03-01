@@ -1,7 +1,7 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedVector from '../lib/AnimatedVector'
-import * as sort from '../lib/Sort'
+import * as sort from '../lib/sort'
 import CubeScene from '../scenes/CubeScene';
 import LightedCubeScene from '../scenes/LightedCubeScene';
 

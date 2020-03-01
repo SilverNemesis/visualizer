@@ -4,7 +4,7 @@ import AnimatedGrid from '../lib/AnimatedGrid'
 import MazeScene from '../scenes/MazeScene';
 import MazeModel from '../models/MazeModel';
 import MazeModelPerPixel from '../models/MazeModelPerPixel';
-import { createMaze, createDungeon } from '../lib/Maze'
+import { createMaze, createDungeon } from '../lib/maze'
 
 const size = 69;
 

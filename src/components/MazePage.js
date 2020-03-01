@@ -1,8 +1,8 @@
 import React from 'react';
 import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedGrid from '../lib/AnimatedGrid'
-import { drawGrid } from '../lib/Drawing'
-import { createMaze, createDungeon } from '../lib/Maze'
+import { drawGrid } from '../lib/drawing'
+import { createMaze, createDungeon } from '../lib/maze'
 
 class MazePage extends React.Component {
   constructor(props) {
