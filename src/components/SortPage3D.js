@@ -18,6 +18,7 @@ class SortPage3D extends React.Component {
     for (let i = 0; i < 100; i++) {
       data.push(i);
     }
+
     this.vector = new AnimatedVector(data, 8);
 
     this.state = {

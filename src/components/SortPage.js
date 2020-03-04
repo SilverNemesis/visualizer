@@ -7,16 +7,18 @@ import { drawBars } from '../lib/drawing'
 class SortPage extends React.Component {
   constructor(props) {
     super(props);
+
     const data = [];
     for (let i = 0; i < 100; i++) {
       data.push(i);
     }
+
+    this.vector = new AnimatedVector(data, 8);
+
     this.state = {
       running: false,
       rendering: false
     };
-
-    this.vector = new AnimatedVector(data, 8);
 
     this.run = this.run.bind(this);
     this.shuffleAction = this.shuffleAction.bind(this);
@@ -84,7 +86,7 @@ class SortPage extends React.Component {
   render() {
     return (
       <Section inner>
-        <Container fluid className="mt-5">
+        <Container fluid className="mt-2 mb-2">
           <Row row="sm">
             <Col col="sm" className="d-flex justify-content-around align-items-center">
               <Button styles="primary" disabled={this.state.running || this.state.rendering} onClick={this.shuffleAction}>Shuffle</Button>
@@ -97,7 +99,7 @@ class SortPage extends React.Component {
             </Col>
           </Row>
         </Container>
-        <canvas className="flex-grow-1" ref={elem => this.canvas = elem} />
+        <canvas className="canvas" ref={elem => this.canvas = elem} />
       </Section >
     );
   }

@@ -12,7 +12,7 @@ const HomePage = () => {
   </Section>
 </Section>`
   return (
-    <pre style={{ color: 'black' }}><code>{code}</code></pre>
+    <pre style={{ color: 'white' }}><code>{code}</code></pre>
   )
 }
 

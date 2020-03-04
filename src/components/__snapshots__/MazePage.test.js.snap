@@ -5,39 +5,35 @@ exports[`renders correctly 1`] = `
   inner={true}
 >
   <Container
-    className="h-100 mt-5"
+    className="mt-2 mb-2"
     fluid={true}
   >
     <Row
-      className="h-100"
+      row="sm"
     >
       <Col
-        col="sm-6"
-      >
-        <canvas
-          className="w-100 h-100"
-        />
-      </Col>
-      <Col
-        className="d-flex flex-column justify-content-around align-items-start"
-        col="sm-6"
+        className="d-flex justify-content-around align-items-center"
+        col="sm"
       >
         <Button
           disabled={false}
           onClick={[Function]}
-          styles="primary large"
+          styles="primary"
         >
           Create Maze
         </Button>
         <Button
           disabled={false}
           onClick={[Function]}
-          styles="primary large"
+          styles="primary"
         >
           Create Dungeon
         </Button>
       </Col>
     </Row>
   </Container>
+  <canvas
+    className="canvas"
+  />
 </Section>
 `;

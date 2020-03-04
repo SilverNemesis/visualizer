@@ -1,10 +1,10 @@
 import React from 'react';
-import { Section, Container, Row, Col, Button } from '../primitives'
-import AnimatedGrid from '../lib/AnimatedGrid'
+import { Section, Container, Row, Col, Button } from '../primitives';
+import AnimatedGrid from '../lib/AnimatedGrid';
+import { createMaze, createDungeon } from '../lib/maze';
 import MazeScene from '../scenes/MazeScene';
 import MazeModel from '../models/MazeModel';
 import MazeModelPerPixel from '../models/MazeModelPerPixel';
-import { createMaze, createDungeon } from '../lib/maze'
 
 const size = 69;
 
@@ -21,6 +21,7 @@ class MazePage3D extends React.Component {
     for (let i = 0; i < size; i++) {
       data.push(Array(size).fill(1));
     }
+
     this.grid = new AnimatedGrid(data, 12);
 
     this.state = {
@@ -73,10 +74,10 @@ class MazePage3D extends React.Component {
     this.run(createDungeon);
   }
 
-  onClickCanvas(event) {
+  onClickCanvas() {
     this.setState({
       sceneIndex: 1 - this.state.sceneIndex
-    }, () => { console.log(this.state) });
+    });
   }
 
   renderCanvas(timeStamp) {

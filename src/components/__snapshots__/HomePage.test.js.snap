@@ -4,7 +4,7 @@ exports[`renders correctly 1`] = `
 <pre
   style={
     Object {
-      "color": "black",
+      "color": "white",
     }
   }
 >

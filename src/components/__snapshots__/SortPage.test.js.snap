@@ -5,7 +5,7 @@ exports[`renders correctly 1`] = `
   inner={true}
 >
   <Container
-    className="mt-5"
+    className="mt-2 mb-2"
     fluid={true}
   >
     <Row
@@ -68,7 +68,7 @@ exports[`renders correctly 1`] = `
     </Row>
   </Container>
   <canvas
-    className="flex-grow-1"
+    className="canvas"
   />
 </Section>
 `;

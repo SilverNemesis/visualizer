@@ -12,6 +12,14 @@ code {
     monospace;
 }
 
+* {
+  user-select: none;
+}
+
+body {
+  background-color: black;
+}
+
 .section {
  display: flex;
  flex-direction: column;
