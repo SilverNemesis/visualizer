@@ -3,16 +3,12 @@ import { Section, Container, Row, Col, Button } from '../primitives'
 import AnimatedVector from '../lib/AnimatedVector'
 import { shuffle, reverse, bubbleSort, insertionSort, mergeSortInPlace, mergeSort, quickSort } from '../lib/sort'
 import CubeScene from '../scenes/CubeScene';
-import LightedCubeScene from '../scenes/LightedCubeScene';
 
 class SortPage3D extends React.Component {
   constructor(props) {
     super(props);
 
-    this.scenes = [
-      new CubeScene(),
-      new LightedCubeScene()
-    ];
+    this.scene = new CubeScene();
 
     const data = [];
     for (let i = 0; i < 100; i++) {
@@ -22,7 +18,7 @@ class SortPage3D extends React.Component {
     this.vector = new AnimatedVector(data, 8);
 
     this.state = {
-      sceneIndex: 0,
+      lightingIndex: 0,
       running: false,
       rendering: false
     };
@@ -50,8 +46,7 @@ class SortPage3D extends React.Component {
     } else {
       this.gl.enable(this.gl.CULL_FACE);
       this.gl.cullFace(this.gl.BACK);
-      this.scenes[0].initScene(this.gl, this.vector.getData());
-      this.scenes[1].initScene(this.gl, this.vector.getData());
+      this.scene.initScene(this.gl, this.vector.getData());
       this.frame = window.requestAnimationFrame(this.renderCanvas);
     }
   }
@@ -97,7 +92,7 @@ class SortPage3D extends React.Component {
 
   onClickCanvas() {
     this.setState({
-      sceneIndex: 1 - this.state.sceneIndex
+      lightingIndex: 1 - this.state.lightingIndex
     });
   }
 
@@ -111,7 +106,7 @@ class SortPage3D extends React.Component {
     if (!animating && !this.state.running) {
       this.setState({ rendering: false });
     }
-    this.scenes[this.state.sceneIndex].drawScene(this.gl, deltaTime, data);
+    this.scene.drawScene(this.gl, deltaTime, data, this.state.lightingIndex, this.state.lightingIndex === 0);
     this.frame = window.requestAnimationFrame(this.renderCanvas);
   }
 

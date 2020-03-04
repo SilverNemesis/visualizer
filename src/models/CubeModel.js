@@ -17,16 +17,20 @@ class CubeModel {
         projectionMatrix: gl.getUniformLocation(shaderProgram, 'camera'),
         modelViewMatrix: gl.getUniformLocation(shaderProgram, 'model'),
         normalMatrix: gl.getUniformLocation(shaderProgram, 'normalMatrix'),
-        light: {
-          position: gl.getUniformLocation(shaderProgram, 'light.position'),
-          color: gl.getUniformLocation(shaderProgram, 'light.color')
+        light1: {
+          position: gl.getUniformLocation(shaderProgram, 'light1.position'),
+          color: gl.getUniformLocation(shaderProgram, 'light1.color')
+        },
+        light2: {
+          position: gl.getUniformLocation(shaderProgram, 'light2.position'),
+          color: gl.getUniformLocation(shaderProgram, 'light2.color')
         }
       },
       buffers: this._initBuffers(gl)
     }
   }
 
-  draw(projectionMatrix, viewMatrix, modelMatrix) {
+  draw(projectionMatrix, viewMatrix, modelMatrix, lights) {
     const gl = this.gl;
     const model = this.model;
     const { buffers } = this.model;
@@ -77,8 +81,10 @@ class CubeModel {
     gl.uniformMatrix4fv(model.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(model.uniformLocations.modelViewMatrix, false, modelViewMatrix);
     gl.uniformMatrix4fv(model.uniformLocations.normalMatrix, false, normalMatrix);
-    gl.uniform3f(model.uniformLocations.light.position, 50.0, 10.0, 20.0);
-    gl.uniform3f(model.uniformLocations.light.color, 1.0, 1.0, 1.0);
+    gl.uniform3fv(model.uniformLocations.light1.position, lights[0].position);
+    gl.uniform3fv(model.uniformLocations.light1.color, lights[0].color);
+    gl.uniform3fv(model.uniformLocations.light2.position, lights[1].position);
+    gl.uniform3fv(model.uniformLocations.light2.color, lights[1].color);
 
     {
       const vertexCount = 36;
@@ -118,7 +124,12 @@ class CubeModel {
       uniform struct {
         vec3 position;
         vec3 color;
-      } light;
+      } light1;
+      
+      uniform struct {
+        vec3 position;
+        vec3 color;
+      } light2;
       
       varying lowp vec4 fragColor;
       varying lowp vec3 fragNormal;
@@ -129,11 +140,15 @@ class CubeModel {
           
           vec3 fragPosition = vec3(model * vec4(fragVert, 1));
           
-          vec3 surfaceToLight = light.position - fragPosition;
-          float bright = dot(normal, surfaceToLight) / (length(surfaceToLight) * length(normal));
-          bright = clamp(bright, 0.0, 1.0);
+          vec3 surfaceToLight1 = light1.position - fragPosition;
+          float bright1 = dot(normal, surfaceToLight1) / (length(surfaceToLight1) * length(normal));
+          bright1 = clamp(bright1, 0.0, 1.0);
       
-          gl_FragColor = vec4(bright * light.color * fragColor.rgb, fragColor.a);
+          vec3 surfaceToLight2 = light2.position - fragPosition;
+          float bright2 = dot(normal, surfaceToLight2) / (length(surfaceToLight2) * length(normal));
+          bright2 = clamp(bright2, 0.0, 1.0);
+      
+          gl_FragColor = vec4(bright1 * light1.color * fragColor.rgb + bright2 * light2.color * fragColor.rgb, fragColor.a);
       }
     `;
 

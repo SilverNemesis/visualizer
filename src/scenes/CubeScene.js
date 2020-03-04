@@ -13,6 +13,28 @@ class CubeScene {
     const model = new CubeModel(gl);
     this.scene = {
       actors: [],
+      lighting: [
+        [
+          {
+            position: [50.0, 10.0, 20.0],
+            color: [1.0, 1.0, 1.0]
+          },
+          {
+            position: [0.0, 0.0, 0.0],
+            color: [0.0, 0.0, 0.0]
+          }
+        ],
+        [
+          {
+            position: [50.0, 10.0, 20.0],
+            color: [1.0, 0.0, 1.0]
+          },
+          {
+            position: [-50.0, -10.0, 20.0],
+            color: [0.0, 1.0, 0.0]
+          }
+        ]
+      ],
       camera: [0.0, 0.0, 50.0],
       cameraAngle: 0.0
     };
@@ -33,8 +55,9 @@ class CubeScene {
     }
   }
 
-  drawScene(gl, deltaTime, data) {
+  drawScene(gl, deltaTime, data, lightingIndex, rotateCamera) {
     const scene = this.scene;
+    const lights = scene.lighting[lightingIndex];
 
     clearScreen(gl);
 
@@ -46,33 +69,45 @@ class CubeScene {
     mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
     const viewMatrix = mat4.create();
-    mat4.rotate(viewMatrix, viewMatrix, scene.cameraAngle, [0, 1, 0]);
+    if (rotateCamera) {
+      mat4.rotate(viewMatrix, viewMatrix, scene.cameraAngle, [0, 1, 0]);
+    }
     mat4.translate(viewMatrix, viewMatrix, scene.camera);
     mat4.invert(viewMatrix, viewMatrix)
 
     for (let i = 0; i < scene.actors.length; i++) {
       const actor = scene.actors[i];
-      this._renderActor(projectionMatrix, viewMatrix, actor);
+      this._renderActor(projectionMatrix, viewMatrix, actor, lights, !rotateCamera);
       this._animateActor(actor, deltaTime, data[i]);
     }
 
-    scene.cameraAngle += 0.001 * deltaTime;
+    if (rotateCamera) {
+      scene.cameraAngle += 0.001 * deltaTime;
+    }
   }
 
-  _renderActor(projectionMatrix, viewMatrix, actor) {
+  _renderActor(projectionMatrix, viewMatrix, actor, lights, applyRotations) {
     const model = actor.model;
     const modelMatrix = mat4.create();
-    for (let i = 0; i < actor.rotations.length; i++) {
-      const rotation = actor.rotations[i];
-      mat4.rotate(modelMatrix, modelMatrix, rotation.angle, rotation.vector);
+    if (applyRotations) {
+      for (let i = 0; i < actor.rotations.length; i++) {
+        const rotation = actor.rotations[i];
+        mat4.rotate(modelMatrix, modelMatrix, rotation.angle, rotation.vector);
+      }
+    }
+    else {
+      const angle = degreesToRadians(-25);
+      const vector = [1, 0, 0];
+      mat4.rotate(modelMatrix, modelMatrix, angle, vector);
     }
     mat4.translate(modelMatrix, modelMatrix, actor.location);
     mat4.scale(modelMatrix, modelMatrix, actor.scale);
-    model.draw(projectionMatrix, viewMatrix, modelMatrix);
+    model.draw(projectionMatrix, viewMatrix, modelMatrix, lights);
   }
 
   _animateActor(actor, deltaTime, height) {
     actor.scale[1] = 0.1 * (height + 1);
+    actor.rotations[0].angle += deltaTime * 0.002;
   }
 }
 
