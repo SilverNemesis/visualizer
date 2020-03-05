@@ -29,9 +29,19 @@ exports[`renders correctly 1`] = `
         >
           Create Dungeon
         </Button>
+        <Button
+          onClick={[Function]}
+          styles="primary"
+        >
+          Switch To 3D
+        </Button>
       </Col>
     </Row>
   </Container>
+  <canvas
+    className="canvas none"
+    onClick={[Function]}
+  />
   <canvas
     className="canvas"
   />

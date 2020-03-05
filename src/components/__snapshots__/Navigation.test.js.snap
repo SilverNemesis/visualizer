@@ -42,12 +42,6 @@ exports[`renders correctly 1`] = `
       >
         Sort 3D
       </ForwardRef>
-      <ForwardRef
-        className="nav-link"
-        to="/maze3d"
-      >
-        Maze 3D
-      </ForwardRef>
     </NavBarNav>
   </NavBarToggler>
 </NavBar>
