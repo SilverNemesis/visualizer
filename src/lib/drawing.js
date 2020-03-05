@@ -1,8 +1,9 @@
 export function drawBars(canvas, data) {
-  const n = data.length;
   const rect = canvas.getBoundingClientRect()
   canvas.width = rect.width * window.devicePixelRatio;
   canvas.height = rect.height * window.devicePixelRatio;
+
+  const n = data.length;
   const w = rect.width;
   const h = rect.height;
   const step = Math.floor(w / n) * .9;
@@ -17,11 +18,12 @@ export function drawBars(canvas, data) {
 }
 
 export function drawGrid(canvas, data, colors) {
-  const n = data.length;
-  const m = data[0].length;
   const rect = canvas.getBoundingClientRect()
   canvas.width = rect.width * window.devicePixelRatio;
   canvas.height = rect.height * window.devicePixelRatio;
+
+  const n = data.length;
+  const m = data[0].length;
   const u = Math.floor(Math.min(canvas.width / 16, canvas.height / 9));
   const w = Math.floor(u * 9 / m) * m;
   const h = Math.floor(u * 9 / n) * n;
