@@ -25,6 +25,12 @@ class MazeScene {
   }
 
   drawScene(gl, maze) {
+    const canvas = gl.canvas;
+    const rect = canvas.getBoundingClientRect()
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
     const scene = this.scene;
 
     clearScreen(gl);
