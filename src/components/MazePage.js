@@ -18,7 +18,7 @@ class MazePage extends React.Component {
       new MazeScene(MazeModelPerPixel)
     ];
 
-    const data = []
+    const data = [];
     for (let i = 0; i < size; i++) {
       data.push(Array(size).fill(1));
     }
