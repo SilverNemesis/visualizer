@@ -64,9 +64,19 @@ exports[`renders correctly 1`] = `
         >
           Quick Sort
         </Button>
+        <Button
+          onClick={[Function]}
+          styles="primary"
+        >
+          Switch To 3D
+        </Button>
       </Col>
     </Row>
   </Container>
+  <canvas
+    className="canvas none"
+    onClick={[Function]}
+  />
   <canvas
     className="canvas"
   />

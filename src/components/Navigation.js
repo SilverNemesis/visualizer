@@ -26,7 +26,6 @@ class Navigation extends React.Component {
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/sort" className="nav-link">Sort</Link>
             <Link to="/maze" className="nav-link">Maze</Link>
-            <Link to="/sort3d" className="nav-link">Sort 3D</Link>
           </NavBarNav>
         </NavBarToggler>
       </NavBar>
