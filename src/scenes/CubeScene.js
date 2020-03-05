@@ -56,6 +56,12 @@ class CubeScene {
   }
 
   drawScene(gl, deltaTime, data, lightingIndex, rotateCamera) {
+    const canvas = gl.canvas;
+    const rect = canvas.getBoundingClientRect()
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
     const scene = this.scene;
     const lights = scene.lighting[lightingIndex];
 
