@@ -36,6 +36,12 @@ exports[`renders correctly 1`] = `
       >
         Maze
       </ForwardRef>
+      <ForwardRef
+        className="nav-link"
+        to="/tree"
+      >
+        Tree
+      </ForwardRef>
     </NavBarNav>
   </NavBarToggler>
 </NavBar>
